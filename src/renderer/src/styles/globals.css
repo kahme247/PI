@@ -798,12 +798,23 @@
   }
   .composer-agent-activity-trigger {
     color: var(--text-secondary);
+    background: var(--bg-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 0 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     transition:
       color var(--motion-fast) var(--motion-ease),
-      opacity var(--motion-fast) var(--motion-ease);
+      background-color var(--motion-fast) var(--motion-ease),
+      border-color var(--motion-fast) var(--motion-ease);
   }
   .composer-agent-activity-trigger:hover {
     color: var(--text-primary);
+    background: var(--bg-hover);
+  }
+  .dark .composer-agent-activity-trigger {
+    background: var(--bg-1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
   }
   .composer-agent-activity-trigger:active {
     opacity: 0.7;

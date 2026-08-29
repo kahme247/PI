@@ -45,7 +45,7 @@ export function GeneralSettings() {
     setSessionWorkerIdleTimeoutMinutes,
   } = useSettingsDraft()
   const [recentProjects, setRecentProjects] = useState<string[]>([])
-  const [fixedOrder, setFixedOrder] = useState(false)
+  const [fixedOrder, setFixedOrder] = useState(true)
   const [updateCheck, setUpdateCheck] = useState<string | null>(null)
   const [checkingUpdate, setCheckingUpdate] = useState(false)
   const [advancedOpen, setAdvancedOpen] = useState(false)

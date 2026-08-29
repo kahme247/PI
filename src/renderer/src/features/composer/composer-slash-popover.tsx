@@ -116,6 +116,7 @@ export function ComposerSlashPopover({
               key={`${cmd.category}-${cmd.id}`}
               type="button"
               data-slash-idx={idx}
+              onMouseDown={(event) => event.preventDefault()}
               onMouseEnter={() => setSelectedIdx(() => idx)}
               onClick={() => onAcceptCommand(cmd)}
               className={cn(
@@ -148,6 +149,7 @@ export function ComposerSlashPopover({
                 <button
                   key={i}
                   type="button"
+                  onMouseDown={(event) => event.preventDefault()}
                   onMouseEnter={() => setArgIdx(() => i)}
                   onClick={() => onAcceptArg(a.label)}
                   className={cn(

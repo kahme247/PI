@@ -7,6 +7,10 @@ import { getAsrConfigForComposer, isAsrVoiceReady } from '@renderer/lib/asr-conf
 
 export type VoiceState = 'idle' | 'recording' | 'transcribing' | 'error'
 
+// 转写 IPC 若永不返回（主进程网络/CLI 挂起），voiceState 会卡在 'transcribing'
+// 永久禁用输入框（issue #94：只能重启恢复）。给调用加超时兜底，超时即回退到 error。
+const TRANSCRIBE_TIMEOUT_MS = 15_000
+
 function blobToBase64(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -152,14 +156,21 @@ export function useVoiceInput(
       try {
         const base64 = await blobToBase64(blob)
         const transcribeCfg = effectiveCfgRef.current ?? (await loadEffectiveAsrConfig())
-        const res = await ipcClient.invoke('asr.transcribe', {
-          audio: base64,
-          mimeType,
-          config: transcribeCfg ?? undefined,
-        })
+        const res = await Promise.race([
+          ipcClient.invoke('asr.transcribe', {
+            audio: base64,
+            mimeType,
+            config: transcribeCfg ?? undefined,
+          }),
+          new Promise<null>((resolve) => setTimeout(() => resolve(null), TRANSCRIBE_TIMEOUT_MS)),
+        ])
         if (res?.ok && res?.text) {
           onResult(res.text)
           setVoiceState('idle')
+        } else if (res === null) {
+          // 转写超时：恢复输入框，避免永久卡在 'transcribing'（issue #94）
+          toast.error(tr('composer:voice.errorTimeout'))
+          setVoiceState('error')
         } else if (res?.kind === 'auth') {
           const hint = res?.error ? String(res.error).slice(0, 160) : tr('composer:voice.errorAuthExpired')
           toast.error(hint)

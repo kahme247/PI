@@ -95,7 +95,7 @@ const store = new Store<StoreSchema>({
       tree: true,
     },
     rightPanelOrder: [],
-    language: 'zh',
+    language: 'en',
     autoOpenLastProject: true,
     autoCheckRegistryUpdates: true,
     lastUpdateCheckAt: 0,

@@ -139,11 +139,11 @@ export async function executeSlashCommand(
         if (res?.compacted) {
           toast.success(i18n.t('composer:compactedHistory'))
         } else {
-          toast.error(res?.error ? String(res.error) : '压缩失败')
+          toast.error(res?.error ? String(res.error) : 'Compaction failed')
         }
       } catch (e) {
         console.error('/compact failed:', e)
-        toast.error('压缩失败')
+        toast.error('Compaction failed')
       }
       return true
     }
@@ -172,7 +172,7 @@ export async function executeSlashCommand(
         void storeMod
       } catch (e) {
         console.error('/fork failed:', e)
-        toast.error('无法打开 Fork 选择器')
+        toast.error('Could not open the fork selector')
       }
       return true
     }
@@ -182,14 +182,14 @@ export async function executeSlashCommand(
         await cloneCurrentSession()
       } catch (e) {
         console.error('/clone failed:', e)
-        toast.error('Clone 失败')
+        toast.error('Clone failed')
       }
       return true
     }
-    case 'review': { setActivePanel('review'); toast.info('已切换到 Review 面板'); return true }
-    case 'run': { setActivePanel('run'); toast.info('已切换到 Run 面板'); return true }
+    case 'review': { setActivePanel('review'); toast.info('Switched to the Review panel'); return true }
+    case 'run': { setActivePanel('run'); toast.info('Switched to the Run panel'); return true }
     case 'tree': { setActivePanel('tree'); return true }
-    case 'settings': { toast.info('请从左侧栏打开设置'); return true }
+    case 'settings': { toast.info('Open Settings from the left sidebar'); return true }
     case 'skills':
     case 'prompts':
     case 'help': {

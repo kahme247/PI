@@ -41,7 +41,7 @@ export function QuestionnaireFooter({
             className="rounded-md bg-primary px-3 py-1.5 text-[13px] text-primary-foreground"
             onClick={isLast ? onSubmit : onNext}
           >
-            {isLast ? '提交' : '下一题'}
+            {isLast ? 'Submit' : 'Next question'}
           </button>
         )}
       </div>

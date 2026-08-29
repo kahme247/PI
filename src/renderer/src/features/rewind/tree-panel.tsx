@@ -83,7 +83,7 @@ export function TreePanel() {
         <button
           type="button"
           className="chrome-icon-btn rounded-md p-1.5"
-          title="刷新"
+          title="Refresh"
           onClick={refresh}
           disabled={!sessionFile}
         >
@@ -93,25 +93,25 @@ export function TreePanel() {
 
       <div className="scrollbar-overlay min-h-0 flex-1 overflow-y-auto overflow-x-hidden py-1">
         {!sessionFile ? (
-          <p className="px-3 py-6 text-[11px] text-muted-foreground/70">未选择会话</p>
+          <p className="px-3 py-6 text-[11px] text-muted-foreground/70">No session selected</p>
         ) : loading && rawTree.length === 0 ? (
           <div className="flex items-center gap-2 px-3 py-6 text-muted-foreground">
             <Loader2 className="h-4 w-4 animate-spin" />
-            加载…
+            Loading…
           </div>
         ) : treeError ? (
           <p className="px-3 py-6 text-[11px] text-amber-700/85 dark:text-amber-300/80">
-            加载失败：{treeError}
+            Failed to load: {treeError}
           </p>
         ) : display.length === 0 ? (
           <p className="px-3 py-6 text-[11px] text-muted-foreground/70">
-            {rawTree.length === 0 ? '树为空' : '无匹配节点'}
+            {rawTree.length === 0 ? 'Tree is empty' : 'No matching nodes'}
           </p>
         ) : (
           <>
             {truncated && (
               <p className="px-3 pb-1.5 text-[10px] text-muted-foreground/80">
-                显示最近 {display.length} 节点，省略 {hiddenCount} 个
+                Showing recent {display.length} nodes, {hiddenCount} hidden
               </p>
             )}
             <SessionTreeList
@@ -129,7 +129,7 @@ export function TreePanel() {
                   <button
                     type="button"
                     className="rounded p-1 text-muted-foreground opacity-0 hover:bg-muted hover:text-primary group-hover/tree-row:opacity-100"
-                    title="Fork 到新会话"
+                    title="Fork to new session"
                     onClick={(event) => {
                       event.stopPropagation()
                       void forkSessionFromEntry(node.id)

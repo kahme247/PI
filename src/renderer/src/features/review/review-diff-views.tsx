@@ -99,7 +99,7 @@ function DiffHunkView({
             'chrome-icon-btn rounded p-0.5 transition-colors',
             staged ? 'text-[var(--diff-added)]' : 'text-muted-foreground/50 hover:text-foreground',
           )}
-          title={staged ? '撤销暂存此 hunk' : '暂存此 hunk'}
+          title={staged ? 'Unstage this hunk' : 'Stage this hunk'}
         >
           <CheckCheck className="h-3 w-3" />
         </button>
@@ -111,7 +111,7 @@ function DiffHunkView({
           type="button"
           onClick={() => void ipcClient.invoke('shell.openPath', { path: `${cwd}/${filePath}` })}
           className="ml-auto opacity-0 hover:opacity-100 chrome-icon-btn rounded p-0.5"
-          title="在编辑器打开"
+          title="Open in editor"
         >
           <ExternalLink className="h-3 w-3" />
         </button>
@@ -265,7 +265,7 @@ export function FileDiffView({
             void ipcClient.invoke('shell.openPath', { path: `${cwd}/${filePath}` })
           }}
           className="opacity-0 group-hover:opacity-100 chrome-icon-btn rounded p-0.5"
-          title="在编辑器打开"
+          title="Open in editor"
         >
           <ExternalLink className="h-3 w-3" />
         </button>
@@ -276,7 +276,7 @@ export function FileDiffView({
             void ipcClient.invoke('shell.showItemInFolder', { path: filePath })
           }}
           className="opacity-0 group-hover:opacity-100 chrome-icon-btn rounded p-0.5"
-          title="在文件夹显示"
+          title="Show in folder"
         >
           <FolderOpen className="h-3 w-3" />
         </button>
@@ -285,17 +285,17 @@ export function FileDiffView({
         <div className="min-w-0 overflow-hidden border-t border-border/30 bg-[var(--bg-2)]">
           {file?.large && (
             <div className="px-3 py-1.5 text-[10px] text-amber-600/80">
-              大变更（{file.additions + file.deletions} 行）
+              Large change ({file.additions + file.deletions} lines)
             </div>
           )}
-          {file?.generated && <div className="px-3 py-1.5 text-[10px] text-muted-foreground/60">生成文件</div>}
+          {file?.generated && <div className="px-3 py-1.5 text-[10px] text-muted-foreground/60">Generated file</div>}
           {(!file || file.hunks.length === 0) && (
             <div className="px-3 py-3 text-[10px] text-muted-foreground/60">
               {file?.binary
-                ? '二进制文件'
+                ? 'Binary file'
                 : file?.status === 'renamed'
-                  ? `重命名自 ${file.oldPath || fallbackPath}`
-                  : '无可显示文本差异'}
+                  ? `Renamed from ${file.oldPath || fallbackPath}`
+                  : 'No text diff to show'}
             </div>
           )}
           {file?.hunks.map((hunk, hi) => (
@@ -334,7 +334,7 @@ export function ReviewCommitBar({ cwd, onCommitted }: { cwd: string; onCommitted
           setMessage('')
           onCommitted()
         } else {
-          setError(res?.error || '提交失败')
+          setError(res?.error || 'Commit failed')
         }
       })
       .catch((e) => setError(String(e)))
@@ -345,7 +345,7 @@ export function ReviewCommitBar({ cwd, onCommitted }: { cwd: string; onCommitted
     <div className="space-y-2 border-t border-border/40 px-3 py-2">
       <div className="flex items-center gap-1.5 text-[11px] text-foreground-secondary">
         <GitCommitHorizontal className="h-3.5 w-3.5" />
-        提交已暂存
+        Commit staged changes
       </div>
       <textarea
         className="settings-field-focus w-full resize-y rounded-md border border-border bg-background px-2.5 py-1.5 text-[12px]"
@@ -355,7 +355,7 @@ export function ReviewCommitBar({ cwd, onCommitted }: { cwd: string; onCommitted
         onChange={(e) => setMessage(e.target.value)}
       />
       {error && <div className="text-[10px] text-destructive">{error}</div>}
-      {hash && <div className="text-[10px] text-[var(--diff-added)]">已提交 {hash.slice(0, 8)}</div>}
+      {hash && <div className="text-[10px] text-[var(--diff-added)]">Committed {hash.slice(0, 8)}</div>}
       <div className="flex justify-end">
         <button
           type="button"
@@ -363,7 +363,7 @@ export function ReviewCommitBar({ cwd, onCommitted }: { cwd: string; onCommitted
           disabled={!message.trim() || committing}
           onClick={handleCommit}
         >
-          {committing ? '提交中…' : '提交'}
+          {committing ? 'Committing…' : 'Commit'}
         </button>
       </div>
     </div>

@@ -18,7 +18,7 @@ export async function materializePendingNewSession(
   if (!workspaceId) return
   const store = useUIStore.getState()
 
-  const title = titleFromFirstMessage(firstMessage, 48) || '新会话'
+  const title = titleFromFirstMessage(firstMessage, 48) || 'New session'
 
   const res = await ipcClient.invoke('session.new', { workspaceId })
   const sessionId = res?.session?.sessionId

@@ -38,7 +38,7 @@ export function ReviewHunkComments({
       <button
         type="button"
         className="chrome-icon-btn flex items-center gap-0.5 rounded px-1 py-0.5 text-[9px] text-muted-foreground/70 hover:text-foreground"
-        title="行内评论草稿"
+        title="Inline comment draft"
         onClick={() => setOpen((o) => !o)}
       >
         <MessageSquarePlus className="h-3 w-3" />
@@ -57,14 +57,14 @@ export function ReviewHunkComments({
                   bump()
                 }}
               >
-                删除
+                Delete
               </button>
             </div>
           ))}
           <textarea
             className="w-full resize-none rounded border border-border/50 bg-background px-2 py-1 font-sans text-[10px]"
             rows={2}
-            placeholder="评论草稿…"
+            placeholder="Comment draft…"
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
           />

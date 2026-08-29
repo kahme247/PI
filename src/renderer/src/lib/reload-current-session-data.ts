@@ -36,7 +36,7 @@ export async function reloadCurrentSessionData(): Promise<{ ok: boolean; error?:
     return { ok: true }
   } catch (e: unknown) {
     console.error('[reloadCurrentSessionData]', e)
-    return { ok: false, error: (e instanceof Error ? e.message : String(e)) || '刷新失败' }
+    return { ok: false, error: (e instanceof Error ? e.message : String(e)) || 'Refresh failed' }
   } finally {
     store.setHistoryLoading(false)
   }

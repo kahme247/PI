@@ -2,10 +2,10 @@
 
 export function formatAgentErrorForTimeline(raw: string): string {
   const trimmed = (raw || '').trim()
-  if (!trimmed) return '未知错误'
+  if (!trimmed) return 'Unknown error'
 
   if (/^Request was aborted\.?$/i.test(trimmed)) {
-    return '请求已中止（Request was aborted）'
+    return 'Request aborted'
   }
 
   const jsonStart = trimmed.indexOf('{')
@@ -35,12 +35,12 @@ export function formatAgentErrorForTimeline(raw: string): string {
   if (/Aborted after \d+ retry attempt/i.test(trimmed)) {
     return trimmed.replace(
       /Aborted after (\d+) retry attempt/i,
-      '重试 $1 次后仍失败',
+      'Failed after $1 retries',
     )
   }
 
   if (/empty_stream|upstream stream closed/i.test(trimmed)) {
-    return `上游模型流异常结束（empty_stream）\n${trimmed}`
+    return `Upstream model stream ended unexpectedly (empty_stream)\n${trimmed}`
   }
 
   return trimmed

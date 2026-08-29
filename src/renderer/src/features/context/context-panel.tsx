@@ -110,7 +110,7 @@ export function ContextPanel() {
                 </button>
                 {open ? (
                   <ContextMessageBody>
-                    {seg.preview || '(空)'}
+                    {seg.preview || '(empty)'}
                     {seg.chars > 280 && (
                       <span className="text-foreground-secondary/50"> … {seg.chars}</span>
                     )}

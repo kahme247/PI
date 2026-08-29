@@ -88,7 +88,7 @@ export function SkillsManagerConfig({
                   off ? 'bg-muted text-muted-foreground' : 'bg-primary/15 text-primary',
                 )}
               >
-                {off ? '已禁用' : '启用'}
+                {off ? 'Disabled' : 'Enabled'}
               </button>
             </div>
           )

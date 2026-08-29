@@ -196,6 +196,6 @@ describe('sessionTreeLineTitle', () => {
         entryType: 'compaction',
         isLeaf: false,
       }),
-    ).toBe('压缩')
+    ).toBe('Compaction')
   })
 })

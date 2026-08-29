@@ -21,7 +21,7 @@ export function SessionForkOverlay({ open, onClose }: { open: boolean; onClose: 
       setSelectedIndex(Math.max(0, list.length - 1))
       setLoading(false)
       if (list.length === 0) {
-        toast.info('没有可 Fork 的用户消息')
+        toast.info('No user messages to fork')
       }
     })
     return () => {
@@ -86,10 +86,10 @@ export function SessionForkOverlay({ open, onClose }: { open: boolean; onClose: 
           <div>
             <div className="text-[13px] font-medium">Fork 会话</div>
             <div className="text-[10px] text-muted-foreground">
-              同 TUI <span className="font-mono">/fork</span> · 选一条用户消息 · Enter 确认 · Esc 关闭
+              Same as TUI <span className="font-mono">/fork</span> · pick a user message · Enter to confirm · Esc to close
             </div>
           </div>
-          <button type="button" className="rounded p-1 hover:bg-muted" onClick={onClose} title="关闭">
+          <button type="button" className="rounded p-1 hover:bg-muted" onClick={onClose} title="Close">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -122,7 +122,7 @@ export function SessionForkOverlay({ open, onClose }: { open: boolean; onClose: 
                       <span className="font-mono text-[10px] text-muted-foreground">
                         {m.entryId.slice(0, 8)}
                       </span>
-                      <span className="line-clamp-2 text-foreground-secondary">{short || '(空)'}</span>
+                      <span className="line-clamp-2 text-foreground-secondary">{short || '(empty)'}</span>
                     </button>
                   </li>
                 )

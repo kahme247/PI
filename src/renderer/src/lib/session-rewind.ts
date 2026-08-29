@@ -33,11 +33,11 @@ export async function navigateSessionToEntry(targetId: string): Promise<boolean>
     })
 
     if (!file) {
-      toast.warning('未找到会话文件，无法刷新时间线')
+      toast.warning('No session file found; cannot refresh the timeline')
       return false
     }
     if (!targetId || !String(targetId).trim()) {
-      toast.warning('无法回退：缺少消息节点 id')
+      toast.warning('Cannot rewind: missing message entry id')
       return false
     }
 
@@ -60,7 +60,7 @@ export async function navigateSessionToEntry(targetId: string): Promise<boolean>
       hasEditorText: !!(r?.editorText && r.editorText.length),
     })
     if (r?.cancelled || r?.error) {
-      toast.error(r?.error || '跳转已取消')
+      toast.error(r?.error || 'Jump cancelled')
       return false
     }
 
@@ -118,7 +118,7 @@ export async function navigateSessionToEntry(targetId: string): Promise<boolean>
       if (hist.error) {
         const disk = await getSessionMessagesFromDiskViaIpc(file, leafId)
         if (disk.error) {
-          toast.error(hist.error || '回退后刷新历史失败')
+          toast.error(hist.error || 'Failed to refresh history after rewind')
           return false
         }
         const { sanitizeHistoryTimeline } = await import('@renderer/lib/timeline-dedupe')
@@ -147,13 +147,13 @@ export async function navigateSessionToEntry(targetId: string): Promise<boolean>
 
     toast.success(
       editorText
-        ? '已回退：消息已填入输入框，可修改后重新发送'
-        : '已跳转到该节点，可从此继续',
+        ? 'Rewound: message filled into the input; edit and resend'
+        : 'Jumped to this node; continue from here',
     )
     return true
   } catch (e: unknown) {
     console.error('[rewind] navigateSessionToEntry error:', e)
-    toast.error((e instanceof Error ? e.message : String(e)) || '回退失败')
+    toast.error((e instanceof Error ? e.message : String(e)) || 'Rewind failed')
     return false
   }
 }

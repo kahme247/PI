@@ -15,7 +15,7 @@ export function PanelResizeEdge({
     <div
       role="separator"
       aria-orientation="vertical"
-      title="拖动调整宽度"
+      title="Drag to resize width"
       onMouseDown={(e) => {
         e.preventDefault()
         onMouseDown(e)

@@ -55,7 +55,7 @@ describe('TreePanel refresh behaviour', () => {
 describe('TreePanel user-only filter', () => {
   it('single click on a user row requests a non-destructive view jump', () => {
     render(<TreePanel />)
-    fireEvent.click(screen.getByText('仅用户'))
+    fireEvent.click(screen.getByText('User only'))
     vi.useFakeTimers()
 
     fireEvent.click(screen.getByRole('button', { name: /第一条用户消息/i }))
@@ -68,7 +68,7 @@ describe('TreePanel user-only filter', () => {
 
   it('double click on a user row rewinds instead of viewing', () => {
     render(<TreePanel />)
-    fireEvent.click(screen.getByText('仅用户'))
+    fireEvent.click(screen.getByText('User only'))
     vi.useFakeTimers()
 
     fireEvent.click(screen.getByRole('button', { name: /第一条用户消息/i }))
@@ -82,7 +82,7 @@ describe('TreePanel user-only filter', () => {
 
   it('only user rows are shown in the user-only tab', () => {
     render(<TreePanel />)
-    fireEvent.click(screen.getByText('仅用户'))
+    fireEvent.click(screen.getByText('User only'))
 
     expect(screen.getByRole('button', { name: /第一条用户消息/i })).toBeTruthy()
     expect(screen.queryByRole('button', { name: /第一条回复/i })).toBeNull()

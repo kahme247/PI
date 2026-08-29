@@ -65,13 +65,13 @@ export async function restoreQueuedToComposer(options?: {
     if (!options?.abort) useUIStore.getState().clearPendingQueue()
     if (combined && options?.setText) options.setText(combined)
     if (!options?.quiet) {
-      if (n > 0 && !options?.abort) toast.info(`已拉回 ${n} 条排队消息到输入框`)
-      else if (!options?.abort) toast.message('没有可拉回的排队消息')
+      if (n > 0 && !options?.abort) toast.info(`Pulled back ${n} queued messages to the input`)
+      else if (!options?.abort) toast.message('No queued messages to pull back')
     }
     return n
   } catch (e) {
     console.error('dequeueClearQueue failed', e)
-    toast.error('拉回队列失败')
+    toast.error('Failed to pull back the queue')
     return 0
   }
 }

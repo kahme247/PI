@@ -151,12 +151,12 @@ export const PROVIDER_PRESETS: ProviderPreset[] = [
   },
   {
     id: 'zhipu',
-    label: '智谱 GLM',
+    label: 'Zhipu GLM',
     tagline: 'OpenAI-compatible',
     defaultKey: 'zhipu',
     accentClass: 'bg-indigo-600',
     config: {
-      name: '智谱',
+      name: 'Zhipu',
       baseUrl: 'https://openai.zhipuai.cn/api/paas/v4',
       api: 'openai-completions',
       apiKey: '$ZHIPU_API_KEY',

@@ -21,23 +21,23 @@ export function sessionTreeLineTitle(n: SessionTreeNode): string {
   if (n.entryType === 'message') {
     const p = (n.preview || '').replace(/\s+/g, ' ').trim()
     if (p) return p.length > 120 ? `${p.slice(0, 120)}…` : p
-    if (n.role === 'user') return '用户'
-    if (n.role === 'assistant') return '助手'
-    return '消息'
+    if (n.role === 'user') return 'User'
+    if (n.role === 'assistant') return 'Assistant'
+    return 'Message'
   }
-  if (n.entryType === 'compaction') return '压缩'
-  if (n.entryType === 'branch_summary') return '分支摘要'
-  if (n.entryType === 'thinking_level_change') return '思考档位'
-  if (n.entryType === 'model_change') return '模型'
+  if (n.entryType === 'compaction') return 'Compaction'
+  if (n.entryType === 'branch_summary') return 'Branch summary'
+  if (n.entryType === 'thinking_level_change') return 'Thinking level'
+  if (n.entryType === 'model_change') return 'Model'
   return n.entryType
 }
 
 export type TreeFilterMode = 'default' | 'no-tools' | 'user-only' | 'labeled-only' | 'all'
 
 export const TREE_FILTER_OPTS: { key: TreeFilterMode; label: string }[] = [
-  { key: 'default', label: '对话' },
-  { key: 'user-only', label: '仅用户' },
-  { key: 'all', label: '全部' },
+  { key: 'default', label: 'Conversation' },
+  { key: 'user-only', label: 'User only' },
+  { key: 'all', label: 'All' },
 ]
 
 export function filterSessionTreeNodes(nodes: SessionTreeNode[], mode: TreeFilterMode): SessionTreeNode[] {
@@ -175,7 +175,7 @@ export function SessionTreeList({
                 type="button"
                 title={
                   n.isLeaf
-                    ? '当前位置'
+                    ? 'Current position'
                     : onActivate
                       ? t('timeline:treeViewNode')
                       : t('timeline:jumpToNode')

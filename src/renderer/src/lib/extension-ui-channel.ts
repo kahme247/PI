@@ -34,10 +34,10 @@ function rawToPending(raw: Record<string, unknown>): ExtensionUIPending | null {
       method: 'image_review',
       payload: {
         image: (raw.image as string) || '',
-        title: (raw.title as string) || '图片审查',
-        question: (raw.question as string) || '这张图片是否可用？',
+        title: (raw.title as string) || 'Image review',
+        question: (raw.question as string) || 'Is this image usable?',
         context: raw.context as string | undefined,
-        options: (raw.options as string[]) || ['通过', '需要修改', '重做', '取消'],
+        options: (raw.options as string[]) || ['Approve', 'Needs changes', 'Redo', 'Cancel'],
         allowFeedback: raw.allowFeedback !== false,
       },
     }
@@ -133,16 +133,16 @@ export function ensureExtensionUIChannel(): void {
 
     const body =
       p.method === 'image_review'
-        ? p.payload.title || '图片审查'
+        ? p.payload.title || 'Image review'
         : p.method === 'ask_user_question'
-          ? '扩展问答'
+          ? 'Extension question'
           : p.method === 'confirm' || p.method === 'select' || p.method === 'input'
-            ? p.title || '需要你的操作'
-            : '需要你的操作'
+            ? p.title || 'Your input is needed'
+            : 'Your input is needed'
     // Desktop alert only when running (idle dialog doesn't need system notification)
     if (useUIStore.getState().runState.status === 'running') {
       void signalDesktopAlert('extension_ui', {
-        title: 'pi Desktop · 等待操作',
+        title: 'pi Desktop · Action needed',
         body,
       })
     }

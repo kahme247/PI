@@ -112,7 +112,7 @@ export function QuestionnaireDialog({
         <button
           type="button"
           className="absolute right-3 top-3 z-10 rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
-          aria-label="稍后作答"
+          aria-label="Answer later"
           onClick={onSuspend}
         >
           <X className="h-4 w-4" />
@@ -145,7 +145,7 @@ export function QuestionnaireDialog({
             <textarea
               className="mt-4 w-full rounded-md border border-input bg-background px-3 py-2 text-[13px]"
               rows={2}
-              placeholder="自定义答案…"
+              placeholder="Custom answer…"
               value={customText[tab] || ''}
               onChange={(e) => setCustomText({ ...customText, [tab]: e.target.value })}
             />

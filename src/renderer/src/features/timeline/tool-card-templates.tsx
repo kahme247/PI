@@ -68,7 +68,7 @@ function collectAssets(details: Record<string, unknown> | null | undefined, out:
   const m = text.match(/filename="([^"]+)"/)
   if (m?.[1]) {
     const ws = useUIStore.getState().currentWorkspace
-    if (ws) push({ path: `${ws.replace(/\\/g, '/')}/${m[1]}`, name: m[1], label: '分析图' })
+    if (ws) push({ path: `${ws.replace(/\\/g, '/')}/${m[1]}`, name: m[1], label: 'Analysis image' })
     else push({ name: m[1], label: m[1] })
   }
   let parsed: { images?: unknown; result?: { images?: unknown } } | null = null
@@ -156,8 +156,8 @@ const ListTemplate: ToolCardComponent = ({ item }) => {
   const statusLine = item.toolStatusLine
   const meta: { label: string; value: unknown }[] = []
   if (details?.session_id) meta.push({ label: 'session', value: details.session_id })
-  if (details?.sources_count != null) meta.push({ label: '信源', value: details.sources_count })
-  if (details?.returned_sources_count != null) meta.push({ label: '返回', value: details.returned_sources_count })
+  if (details?.sources_count != null) meta.push({ label: 'Sources', value: details.sources_count })
+  if (details?.returned_sources_count != null) meta.push({ label: 'Returned', value: details.returned_sources_count })
   if (details?.profile) meta.push({ label: 'profile', value: details.profile })
   if (details?.mode) meta.push({ label: 'mode', value: details.mode })
   if (details?.model) meta.push({ label: 'model', value: details.model })

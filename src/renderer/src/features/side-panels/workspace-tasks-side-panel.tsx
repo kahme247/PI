@@ -25,10 +25,10 @@ interface TasksPanelState {
 }
 
 const STATUS_LABELS: Record<string, string> = {
-  in_progress: '进行中',
-  planning: '规划中',
-  review: '审查中',
-  completed: '已完成',
+  in_progress: 'In progress',
+  planning: 'Planning',
+  review: 'In review',
+  completed: 'Completed',
 }
 
 const STATUS_COLORS: Record<string, string> = {
@@ -144,7 +144,7 @@ export function WorkspaceTasksSidePanel({ panelId, adapterId }: SidePanelCompone
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
                       {task.isCurrent && (
-                        <span className="shrink-0 h-1.5 w-1.5 rounded-full bg-green-500" title="当前任务" />
+                        <span className="shrink-0 h-1.5 w-1.5 rounded-full bg-green-500" title="Current task" />
                       )}
                       <span className="truncate text-[12px] font-medium leading-tight">{task.title}</span>
                     </div>

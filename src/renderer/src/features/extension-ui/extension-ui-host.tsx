@@ -57,10 +57,10 @@ function suspendActiveDialog() {
   if (timelineItemId) {
     useUIStore.getState().updateTimelineItem(timelineItemId, {
       extensionUiSuspended: true,
-      toolStatusLine: '等待你的作答（点击「继续作答」）',
+      toolStatusLine: 'Awaiting your answer (click "Continue answering")',
     })
   }
-  toast.message('已挂起，可在时间线该工具行点击「继续作答」')
+  toast.message('Suspended — click "Continue answering" on that tool row in the timeline')
 }
 
 export function ExtensionUIHost() {

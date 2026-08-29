@@ -117,7 +117,7 @@ function EditWritePreview({ item, flat }: { item: ToolTimelineItem; flat?: boole
       title={name}
       meta={
         <span className={cn('text-[10px]', item.isError ? 'text-destructive' : 'text-green-600 dark:text-green-400')}>
-          {item.isError ? '失败' : '已保存'}
+          {item.isError ? 'Failed' : 'Saved'}
         </span>
       }
       defaultOpen={false}
@@ -228,7 +228,7 @@ function GrepFindPreview({ item, isFind, flat }: { item: ToolTimelineItem; isFin
           onClick={() => setExpanded(!expanded)}
           className="w-full border-t border-border/30 py-1.5 text-center text-[10px] text-foreground-secondary hover:text-foreground"
         >
-          {expanded ? '收起' : `展开全部 ${lines.length} 条`}
+          {expanded ? 'Collapse' : `Expand all ${lines.length} lines`}
         </button>
       )}
     </NativePreviewPanel>
@@ -239,7 +239,7 @@ function BashPreview({ item, flat }: { item: ToolTimelineItem; flat?: boolean })
   const args = normalizeToolArgs(item.toolArgs)
   const command = String(args.command || args.cmd || '')
   const output = extractToolText(item.toolOutput || '').replace(/\n$/, '')
-  const exitHint = item.isError ? 'exit ≠ 0' : output ? '完成' : ''
+  const exitHint = item.isError ? 'exit ≠ 0' : output ? 'Done' : ''
 
   return (
     <NativePreviewPanel itemRunId={item.runId}

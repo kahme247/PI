@@ -59,7 +59,7 @@ export function SessionTreeOverlay({ open, onClose }: { open: boolean; onClose: 
       const node = rawTree.find((n) => n.id === id)
       if (!node) return
       if (node.isLeaf) {
-        toast.info('已是当前对话位置')
+        toast.info('Already at the current conversation position')
         return
       }
       onClose()
@@ -75,7 +75,7 @@ export function SessionTreeOverlay({ open, onClose }: { open: boolean; onClose: 
       const node = rawTree.find((n) => n.id === id)
       if (!node) return
       if (node.isLeaf) {
-        toast.info('已是当前对话位置')
+        toast.info('Already at the current conversation position')
         return
       }
       onClose()
@@ -124,7 +124,7 @@ export function SessionTreeOverlay({ open, onClose }: { open: boolean; onClose: 
       className="fixed inset-0 z-[120] flex items-center justify-center bg-black/45 p-4 backdrop-blur-[2px]"
       role="dialog"
       aria-modal
-      aria-label="会话树"
+      aria-label="Session tree"
       onMouseDown={(e) => e.target === e.currentTarget && onClose()}
     >
       <div
@@ -133,16 +133,16 @@ export function SessionTreeOverlay({ open, onClose }: { open: boolean; onClose: 
       >
         <div className="flex items-center justify-between border-b border-border/60 px-4 py-3">
           <div>
-            <h2 className="text-[15px] font-semibold">会话树</h2>
+            <h2 className="text-[15px] font-semibold">Session tree</h2>
             <p className="mt-0.5 text-[11px] text-muted-foreground">
               {t('timeline:treeOverlayHint')}
             </p>
           </div>
           <div className="flex items-center gap-1">
-            <button type="button" className="rounded-lg p-2 hover:bg-muted" title="刷新" onClick={refresh}>
+            <button type="button" className="rounded-lg p-2 hover:bg-muted" title="Refresh" onClick={refresh}>
               <RefreshCw className="h-4 w-4" />
             </button>
-            <button type="button" className="rounded-lg p-2 hover:bg-muted" title="关闭" onClick={onClose}>
+            <button type="button" className="rounded-lg p-2 hover:bg-muted" title="Close" onClick={onClose}>
               <X className="h-4 w-4" />
             </button>
           </div>
@@ -180,7 +180,7 @@ export function SessionTreeOverlay({ open, onClose }: { open: boolean; onClose: 
             <>
               {truncated && (
                 <p className="mb-2 px-2 text-center text-[11px] text-muted-foreground">
-                  仅显示最近 {visible.length} 个节点（另有 {hiddenCount} 个已省略，可在右栏会话树查看）
+                  Showing only the most recent {visible.length} nodes ({hiddenCount} more hidden; see the session tree in the right panel)
                 </p>
               )}
               <SessionTreeList

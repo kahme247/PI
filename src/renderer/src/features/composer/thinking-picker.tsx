@@ -8,12 +8,12 @@ import { toast } from 'sonner'
 import { normalizeThinkingLevel } from '@renderer/lib/format-run-display'
 
 const LEVELS: { key: string; label: string; desc: string }[] = [
-  { key: 'off', label: 'Off', desc: '不思考，直接回答' },
-  { key: 'minimal', label: 'Minimal', desc: '极简思考' },
-  { key: 'low', label: 'Low', desc: '轻度思考' },
-  { key: 'medium', label: 'Medium', desc: '中等思考（默认）' },
-  { key: 'high', label: 'High', desc: '深度思考' },
-  { key: 'xhigh', label: 'XHigh', desc: '极致思考（耗时/token 多）' },
+  { key: 'off', label: 'Off', desc: 'No thinking, answer directly' },
+  { key: 'minimal', label: 'Minimal', desc: 'Minimal thinking' },
+  { key: 'low', label: 'Low', desc: 'Light thinking' },
+  { key: 'medium', label: 'Medium', desc: 'Moderate thinking (default)' },
+  { key: 'high', label: 'High', desc: 'Deep thinking' },
+  { key: 'xhigh', label: 'XHigh', desc: 'Extreme thinking (slow / more tokens)' },
 ]
 
 export function ThinkingPicker() {
@@ -43,7 +43,7 @@ export function ThinkingPicker() {
       }
       console.error('thinkingLevel.set failed:', e)
       useUIStore.getState().setRunState({ thinkingLevel: previous })
-      toast.error('切换失败')
+      toast.error('Switch failed')
     }
   }
 
@@ -57,7 +57,7 @@ export function ThinkingPicker() {
         <div className="flex items-center justify-between border-b px-4 py-3">
           <div className="flex items-center gap-2">
             <Brain className="h-4 w-4 text-muted-foreground/70" />
-            <div className="text-[14px] font-medium">Thinking 等级</div>
+            <div className="text-[14px] font-medium">Thinking level</div>
           </div>
           <button type="button" onClick={() => setOpen(false)} className="row-hover rounded-lg p-1.5 text-foreground-secondary hover:text-foreground">
             <X className="h-4 w-4" />

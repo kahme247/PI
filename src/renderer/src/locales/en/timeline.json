@@ -112,5 +112,6 @@
     "verbSearch": "Searched {{detail}}",
     "verbUsed": "Used {{name}} · {{detail}}",
     "workingTool": "Running {{name}}…"
-  }
+  },
+  "forkFromHere": "Fork a new session from here"
 }

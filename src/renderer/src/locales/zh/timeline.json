@@ -112,5 +112,6 @@
     "verbSearch": "搜索了 {{detail}}",
     "verbUsed": "使用了 {{name}} · {{detail}}",
     "workingTool": "正在运行 {{name}}…"
-  }
+  },
+  "forkFromHere": "从此 Fork 新会话"
 }

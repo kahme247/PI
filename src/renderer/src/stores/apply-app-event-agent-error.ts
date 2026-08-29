@@ -7,7 +7,7 @@ import { flushStreamPendingSync } from '@renderer/stores/ui-store-stream'
 export function handleAgentError(event: AgentErrorEvent, api: StoreApi): void {
   flushStreamPendingSync(api.get, api.set)
   const state = api.get()
-  const raw = event.text || '未知错误'
+  const raw = event.text || 'Unknown error'
   const kind = event.kind || agentErrorKind(raw)
   const stopReason = kind === 'aborted' ? 'aborted' : kind === 'retry' ? 'error' : 'error'
   // Mark incomplete before clearing stream id / pruning empty bubbles.

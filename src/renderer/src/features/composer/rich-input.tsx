@@ -8,6 +8,7 @@ const MAX_EDITOR_HEIGHT = 112
 
 export interface RichInputProps {
   placeholder?: string
+  ariaLabel?: string
   disabled?: boolean
   onKeyDown?: (e: React.KeyboardEvent) => void
   onPaste?: (e: React.ClipboardEvent) => void
@@ -118,7 +119,7 @@ function scrollCaretIntoView(el: HTMLElement, mutationObserver?: MutationObserve
 }
 
 export const RichInput = forwardRef<HTMLDivElement, RichInputProps>(function RichInput(
-  { placeholder, disabled, onKeyDown, onPaste, onFocus, onBlur, onInput, className },
+  { placeholder, ariaLabel, disabled, onKeyDown, onPaste, onFocus, onBlur, onInput, className },
   ref,
 ) {
   const innerRef = useRef<HTMLDivElement>(null)
@@ -226,6 +227,9 @@ export const RichInput = forwardRef<HTMLDivElement, RichInputProps>(function Ric
       ref={innerRef}
       contentEditable={!disabled}
       suppressContentEditableWarning
+      role="textbox"
+      aria-multiline="true"
+      aria-label={ariaLabel}
       data-placeholder={placeholder}
       onKeyDown={onKeyDown}
       onPaste={onPaste}

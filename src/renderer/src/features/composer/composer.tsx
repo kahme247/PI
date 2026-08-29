@@ -444,6 +444,7 @@ export function Composer() {
           />
           <RichInput
             ref={editorRef}
+            ariaLabel={t('composer:placeholder')}
             onKeyDown={handleKeyDown}
             onPaste={attachmentHandlers.handlePaste}
             onFocus={() => setComposerFocused(true)}

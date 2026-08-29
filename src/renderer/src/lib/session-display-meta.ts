@@ -102,6 +102,13 @@ export async function applyComposerDisplayMeta(meta?: SessionDisplayMeta | null)
     if (!patch.model && sessionModel) patch.model = sessionModel
   }
 
+  // Last-used model/thinking fill before pi defaults so the composer's default
+  // reflects the model most recently used, not the configured global default.
+  const lm = normalizeModelKey(store.lastModel)
+  const lt = normalizeThinkingLevel(store.lastThinking)
+  if (!workerBoundToView && !patch.model && lm) patch.model = lm
+  if (!patch.thinkingLevel && lt) patch.thinkingLevel = lt
+
   if (!patch.model || !patch.thinkingLevel) {
     const defaults = await fetchPiDefaultDisplayMeta()
     const dm = normalizeModelKey(defaults.model)
@@ -110,11 +117,6 @@ export async function applyComposerDisplayMeta(meta?: SessionDisplayMeta | null)
     if (!workerBoundToView && !patch.model && dm) patch.model = dm
     if (!patch.thinkingLevel && dt) patch.thinkingLevel = dt
   }
-
-  const lm = normalizeModelKey(store.lastModel)
-  const lt = normalizeThinkingLevel(store.lastThinking)
-  if (!workerBoundToView && !patch.model && lm) patch.model = lm
-  if (!patch.thinkingLevel && lt) patch.thinkingLevel = lt
 
   const cur = store.runState
   // Bound without a model key: clear stale display rather than keep JSONL/lastModel

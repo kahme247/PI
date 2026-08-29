@@ -1,0 +1,35 @@
+{
+  "id": "@juicesharp/rpiv-todo",
+  "displayName": "rpiv Todo",
+  "description": "Live todo list above the composer",
+  "match": {
+    "names": [
+      "@juicesharp/rpiv-todo",
+      "rpiv-todo"
+    ]
+  },
+  "tier": "partial",
+  "widget": {
+    "keys": ["rpiv-todos"],
+    "placement": "aboveComposer",
+    "protocol": "todo-list-v1",
+    "icon": "ListTodo",
+    "title": "Todos",
+    "fields": {
+      "items": "tasks",
+      "id": "id",
+      "text": "subject",
+      "status": "status"
+    }
+  },
+  "i18n": {
+    "zh": {
+      "displayName": "rpiv Todo",
+      "description": "在输入框上方显示当前会话 Todo 列表"
+    },
+    "en": {
+      "displayName": "rpiv Todo",
+      "description": "Show the current session todo list above the composer"
+    }
+  }
+}

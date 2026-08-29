@@ -21,6 +21,8 @@ vi.mock('sonner', () => ({
   toast: { error: vi.fn(), success: vi.fn(), message: vi.fn() },
 }))
 
+vi.mock('@renderer/lib/composer-run-display', () => ({ refreshComposerRunDisplay: vi.fn() }))
+
 vi.mock('./models-provider-card', () => ({
   ModelsProviderCard: ({
     onUpdateProvider,

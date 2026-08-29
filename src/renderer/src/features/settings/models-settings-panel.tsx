@@ -22,6 +22,7 @@ import { ModelsProviderCard } from './models-provider-card'
 import { ModelsSdkProviderSection } from './models-sdk-provider-section'
 import { saveModelsConfigDraft } from './save-models-config'
 import { invalidateAvailableModels, prefetchAvailableModels } from '@renderer/lib/available-models-cache'
+import { refreshComposerRunDisplay } from '@renderer/lib/composer-run-display'
 
 export function ModelsSettingsPanel() {
   const { t } = useTranslation('settings')
@@ -103,6 +104,9 @@ export function ModelsSettingsPanel() {
           reload: load,
         })
         prefetchAvailableModels()
+        // Refresh the composer's model/thinking chips so per-model thinking
+        // settings edits are reflected when returning to the composer.
+        await refreshComposerRunDisplay()
       } catch (error) {
         const message = error instanceof Error && error.message !== 'SAVE_FAILED'
           ? error.message

@@ -231,17 +231,17 @@ export function wireDelayedTooltip(el: HTMLElement, content: string, delayMs = D
   })
 
   const parent = el.parentElement
-  if (parent) {
-    observer = new MutationObserver(() => {
-      if (!el.isConnected) {
-        hideImmediate()
-        unbindViewport()
-        document.removeEventListener('pointerdown', onDocPointerDown, true)
-        observer?.disconnect()
-        observer = null
-        unregisterHide()
-      }
-    })
-    observer.observe(parent, { childList: true, subtree: true })
-  }
+  // 观察稳定祖先（document.body）而非 el.parentElement：当整个附件条/组合器被卸载时，
+  // parent 自身也会脱离 DOM，观察它无法触发回调，导致 window/document 监听泄漏。
+  observer = new MutationObserver(() => {
+    if (!el.isConnected) {
+      hideImmediate()
+      unbindViewport()
+      document.removeEventListener('pointerdown', onDocPointerDown, true)
+      observer?.disconnect()
+      observer = null
+      unregisterHide()
+    }
+  })
+  observer.observe(document.body, { childList: true, subtree: true })
 }

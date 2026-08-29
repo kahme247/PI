@@ -349,6 +349,11 @@
     opacity: 1;
     pointer-events: auto;
   }
+  .message-actions-slot:focus-within {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    pointer-events: auto;
+  }
   @media (prefers-reduced-motion: reduce) {
     .message-actions-slot {
       transition: none;

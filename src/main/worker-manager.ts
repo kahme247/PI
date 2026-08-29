@@ -188,6 +188,14 @@ export class WorkerManager {
       mainWindow: this.mainWindow,
     })
 
+    try {
+      await init
+    } catch (error) {
+      // init 失败（超时/worker 报错）：不留下占位的僵尸 slot，及时释放进程与容量。
+      if (this.pool.get(key) === slot) this.pool.delete(key)
+      await disposeWorkerSlot(slot, this.mainWindow)
+      throw error
+    }
     return init
   }
 
@@ -275,7 +283,14 @@ export class WorkerManager {
       onSlotExit: (s, code) => this.handleSlotExit(s, code),
     })
 
-    await init
+    try {
+      await init
+    } catch (error) {
+      // init 失败：释放占位的 slot 与进程，避免占用 maxSessionWorkers 容量。
+      if (this.pool.get(sk) === slot) this.pool.delete(sk)
+      await disposeWorkerSlot(slot, this.mainWindow)
+      throw error
+    }
     await this.requestOnSlot(slot, 'loadSession', { sessionFile: sk })
 
     evictIdleWorkers(this.pool, {

@@ -105,6 +105,38 @@ async function gitExec(
   })
 }
 
+/** gitExec 的异步版本，支持通过 stdin 传入 input（apply/commit -F - 需要）。 */
+async function gitExecWithInput(
+  cwd: string,
+  args: string[],
+  input: string,
+  timeoutMs = 8000,
+): Promise<{ status: number; stdout: string; stderr: string }> {
+  const distro = activeWslDistro()
+  if (distro) {
+    // runWslAsync 不支持 stdin input；WSL 下回退到同步 input-capable 路径。
+    const r = runGitInWsl(distro, cwd, args, { timeout: timeoutMs, input })
+    return { status: r.status ?? -1, stdout: r.stdout, stderr: r.stderr }
+  }
+  return new Promise((resolve) => {
+    const child = execFile('git', args, {
+      cwd,
+      encoding: 'utf-8',
+      timeout: timeoutMs,
+      maxBuffer: 4 * 1024 * 1024,
+      windowsHide: true,
+    }, (error, stdout, stderr) => {
+      const e = error as NodeJS.ErrnoException & { code?: string | number } | null
+      resolve({
+        status: error ? typeof e?.code === 'number' ? e.code : -1 : 0,
+        stdout: stdout ?? '',
+        stderr: stderr ?? error?.message ?? '',
+      })
+    })
+    child.stdin?.end(input)
+  })
+}
+
 async function runGitReadOnly(
   cwd: string,
   args: string[],
@@ -209,16 +241,16 @@ export async function readGitWorkspaceSnapshot(cwd: string): Promise<GitWorkspac
 }
 
 /** 选择性暂存 hunk：patch 来自已读真实 git diff，git apply --cached --recount */
-export function stageHunks(
+export async function stageHunks(
   cwd: string,
   files: { path: string; hunkPatches: string[] }[],
-): { ok: boolean; error?: string } {
+): Promise<{ ok: boolean; error?: string }> {
   for (const f of files) {
     for (const patch of f.hunkPatches) {
       if (!patch || (!patch.startsWith('diff --git') && !patch.startsWith('@@'))) continue
-      const r = gitExecSync(cwd, ['apply', '--cached', '--recount'], { timeout: 10000, input: patch })
+      const r = await gitExecWithInput(cwd, ['apply', '--cached', '--recount'], patch, 10000)
       if (r.status !== 0) {
-        return { ok: false, error: (r.stderr || 'git apply 失败').trim().slice(0, 500) }
+        return { ok: false, error: (r.stderr || 'git apply failed').trim().slice(0, 500) }
       }
     }
   }
@@ -226,16 +258,16 @@ export function stageHunks(
 }
 
 /** 反向应用 patch 撤销暂存 */
-export function unstageHunks(
+export async function unstageHunks(
   cwd: string,
   files: { path: string; hunkPatches: string[] }[],
-): { ok: boolean; error?: string } {
+): Promise<{ ok: boolean; error?: string }> {
   for (const f of files) {
     for (const patch of f.hunkPatches) {
       if (!patch) continue
-      const r = gitExecSync(cwd, ['apply', '-R', '--cached'], { timeout: 10000, input: patch })
+      const r = await gitExecWithInput(cwd, ['apply', '-R', '--cached'], patch, 10000)
       if (r.status !== 0) {
-        return { ok: false, error: (r.stderr || 'git apply -R 失败').trim().slice(0, 500) }
+        return { ok: false, error: (r.stderr || 'git apply -R failed').trim().slice(0, 500) }
       }
     }
   }
@@ -243,13 +275,17 @@ export function unstageHunks(
 }
 
 /** 提交：message 经 stdin（-F -）传入，避免临时文件与 shell 注入问题 */
-export function commitChanges(
+export async function commitChanges(
   cwd: string,
   message: string,
-): { ok: boolean; error?: string; commitHash?: string } {
-  if (!message.trim()) return { ok: false, error: 'commit message 为空' }
-  const r = runGit(cwd, ['commit', '-F', '-'], { timeout: 15000, input: message })
-  if (!r.ok) return { ok: false, error: r.message }
-  const hashR = runGit(cwd, ['rev-parse', 'HEAD'], { timeout: 3000 })
-  return { ok: true, commitHash: hashR.ok ? hashR.stdout.trim() : undefined }
+): Promise<{ ok: boolean; error?: string; commitHash?: string }> {
+  if (!message.trim()) return { ok: false, error: 'commit message is empty' }
+  const r = await gitExecWithInput(cwd, ['commit', '-F', '-'], message, 15000)
+  if (r.status !== 0) {
+    const err = (r.stderr || r.stdout || '').trim()
+    if (isNotGitRepo(r.stderr, err)) return { ok: false, error: 'Not a git repository' }
+    return { ok: false, error: err.split('\n').find((l) => l.trim())?.slice(0, 500) || 'git commit failed' }
+  }
+  const hashR = await gitExec(cwd, ['rev-parse', 'HEAD'], { timeout: 3000 })
+  return { ok: true, commitHash: hashR.status === 0 ? hashR.stdout.trim() : undefined }
 }

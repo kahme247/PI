@@ -47,12 +47,12 @@ describe('git-workspace host mode', () => {
     expect(r).toEqual({ ok: false, notRepo: true, message: '当前目录不是 Git 仓库' })
   })
 
-  it('commitChanges commits via stdin and returns the new hash', () => {
+  it('commitChanges commits via stdin and returns the new hash', async () => {
     const dir = makeRepo()
     writeFileSync(join(dir, 'b.txt'), 'new\n')
     execFileSync('git', ['add', '.'], { cwd: dir, stdio: 'ignore' })
     const before = runGit(dir, ['rev-parse', 'HEAD'], { timeout: 3000 })
-    const r = commitChanges(dir, 'second commit\n\nwith body')
+    const r = await commitChanges(dir, 'second commit\n\nwith body')
     expect(r.ok).toBe(true)
     const after = runGit(dir, ['rev-parse', 'HEAD'], { timeout: 3000 })
     expect(r.commitHash).toBeTruthy()
@@ -60,18 +60,18 @@ describe('git-workspace host mode', () => {
     if (after.ok) expect(after.stdout.trim()).toBe(r.commitHash)
   })
 
-  it('stageHunks stages a working-tree diff and unstageHunks reverses it', () => {
+  it('stageHunks stages a working-tree diff and unstageHunks reverses it', async () => {
     const dir = makeRepo()
     writeFileSync(join(dir, 'a.txt'), 'hello\nworld\n')
     const diff = execFileSync('git', ['diff'], { cwd: dir, encoding: 'utf-8' })
     expect(diff).toContain('@@')
 
-    const staged = stageHunks(dir, [{ path: 'a.txt', hunkPatches: [diff] }])
+    const staged = await stageHunks(dir, [{ path: 'a.txt', hunkPatches: [diff] }])
     expect(staged.ok).toBe(true)
     const cached = execFileSync('git', ['diff', '--cached'], { cwd: dir, encoding: 'utf-8' })
     expect(cached).toContain('world')
 
-    const unstaged = unstageHunks(dir, [{ path: 'a.txt', hunkPatches: [diff] }])
+    const unstaged = await unstageHunks(dir, [{ path: 'a.txt', hunkPatches: [diff] }])
     expect(unstaged.ok).toBe(true)
     const cachedAfter = execFileSync('git', ['diff', '--cached'], { cwd: dir, encoding: 'utf-8' })
     expect(cachedAfter).toBe('')

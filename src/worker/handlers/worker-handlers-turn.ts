@@ -143,7 +143,8 @@ export async function handleAbort(msg: WorkerIncomingMessage, reply: WorkerReply
 
 
 export async function handleSteer(msg: WorkerIncomingMessage, reply: WorkerReply): Promise<void> {
-        await st.session?.steer(String(msg.text ?? ''))
+        if (!st.session) { reply({ type: 'error', error: 'No st.session' }); return }
+        await st.session.steer(String(msg.text ?? ''))
         reply({ type: 'steer-done' })
         return
 }

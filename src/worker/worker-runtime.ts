@@ -200,7 +200,7 @@ function wireRuntimeCallbacks(runtime: AgentSessionRuntime): void {
   })
 }
 
-async function disposeRuntimeOrSession(): Promise<void> {
+export async function disposeRuntimeOrSession(): Promise<void> {
   detachSessionSubscription()
   st.agentTurnActive = false
   st.promptPreflightActive = false

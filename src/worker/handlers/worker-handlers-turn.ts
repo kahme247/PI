@@ -10,6 +10,7 @@ import {
   beginRunIdentity,
   emit,
   currentSessionModelKey,
+  disposeRuntimeOrSession,
 } from '../worker-runtime.js'
 
 export async function handleInit(msg: WorkerIncomingMessage, reply: WorkerReply): Promise<void> {
@@ -215,14 +216,7 @@ export async function handleDispose(msg: WorkerIncomingMessage, reply: WorkerRep
         st.agentTurnActive = false
         st.promptPreflightActive = false
         if (st.unsubscribe) { st.unsubscribe(); st.unsubscribe = null }
-        try {
-          st.session?.dispose()
-        } catch (e) {
-          console.error('[Worker] session.dispose failed:', e)
-        }
-        st.session = null
-        st.modelRuntime = null
-        st.runtime = null
+        await disposeRuntimeOrSession()
         reply({ type: 'dispose-done' })
         return
 }

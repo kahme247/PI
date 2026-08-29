@@ -8,7 +8,7 @@ import { nextRecentProjects } from './recent-projects'
 
 export interface StoreSchema {
   recentProjects: string[]
-  /** 侧栏项目列表固定顺序（不随打开而置顶）；false = 最近使用排序（默认） */
+  /** 新项目插入位置：true = 追加到末尾；false = 插到最前。已有项目切换时永不移动。 */
   recentProjectsFixedOrder: boolean
   currentProject: string | null
   windowBounds: { width: number; height: number; x?: number; y?: number } | null

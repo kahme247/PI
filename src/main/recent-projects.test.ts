@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest'
 import { RECENT_PROJECTS_CAP, nextRecentProjects } from './recent-projects'
 
 describe('nextRecentProjects', () => {
-  describe('MRU mode (default, fixedOrder=false)', () => {
-    it('moves an existing project to the front', () => {
-      expect(nextRecentProjects(['a', 'b', 'c'], 'b', false)).toEqual(['b', 'a', 'c'])
+  describe('MRU mode (fixedOrder=false)', () => {
+    it('does not move an already-listed project', () => {
+      expect(nextRecentProjects(['a', 'b', 'c'], 'b', false)).toEqual(['a', 'b', 'c'])
     })
 
     it('puts a new project at the front', () => {

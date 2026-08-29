@@ -41,7 +41,7 @@ export function ProjectSidebar({
   const [loadingSessionPaths, setLoadingSessionPaths] = useState<Set<string>>(() => new Set())
   const [sandboxes, setSandboxes] = useState<SandboxEntry[]>([])
   const [expandedPaths, setExpandedPaths] = useState<Set<string>>(() => new Set())
-  const [recentProjectsFixedOrder, setRecentProjectsFixedOrder] = useState(false)
+  const [recentProjectsFixedOrder, setRecentProjectsFixedOrder] = useState(true)
   const fixedOrderRef = useRef(false)
   const [sectionOpen, setSectionOpen] = useState(true)
 

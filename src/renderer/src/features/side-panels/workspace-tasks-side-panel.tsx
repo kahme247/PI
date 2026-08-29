@@ -80,13 +80,13 @@ export function WorkspaceTasksSidePanel({ panelId, adapterId }: SidePanelCompone
   }, [workspace, adapterId])
 
   if (!adapterId) {
-    return <div className="p-4 text-[12px] text-muted-foreground">未绑定 adapterId（{panelId}）</div>
+    return <div className="p-4 text-[12px] text-muted-foreground">No adapter bound ({panelId})</div>
   }
 
   if (!workspace) {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-2 p-4 text-center">
-        <span className="text-[12px] text-muted-foreground/50">请先打开项目</span>
+        <span className="text-[12px] text-muted-foreground/50">Open a project first</span>
       </div>
     )
   }
@@ -94,9 +94,9 @@ export function WorkspaceTasksSidePanel({ panelId, adapterId }: SidePanelCompone
   if (loadError) {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-2 p-4 text-center">
-        <span className="text-[12px] text-muted-foreground/50">无法加载面板状态</span>
+        <span className="text-[12px] text-muted-foreground/50">Could not load panel state</span>
         <span className="text-[10px] font-mono text-muted-foreground/40">{loadError}</span>
-        <button type="button" onClick={fetchData} className="text-[11px] text-primary hover:underline">重试</button>
+        <button type="button" onClick={fetchData} className="text-[11px] text-primary hover:underline">Retry</button>
       </div>
     )
   }
@@ -104,8 +104,8 @@ export function WorkspaceTasksSidePanel({ panelId, adapterId }: SidePanelCompone
   if (!data.ready) {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-2 p-4 text-center">
-        <span className="text-[12px] text-muted-foreground/50">当前项目无任务工作区布局</span>
-        <span className="text-[10px] text-muted-foreground/40">需在项目根存在 `.trellis/`（stateProvider: workspace-trellis）</span>
+        <span className="text-[12px] text-muted-foreground/50">No task workspace layout for this project</span>
+        <span className="text-[10px] text-muted-foreground/40">A `.trellis/` dir must exist at the project root (stateProvider: workspace-trellis)</span>
       </div>
     )
   }
@@ -127,7 +127,7 @@ export function WorkspaceTasksSidePanel({ panelId, adapterId }: SidePanelCompone
       {data.tasks.length > 0 && (
         <div className="px-2 py-1.5 space-y-1">
           <div className="px-1 pb-1 text-[12px] text-foreground-secondary">
-            活跃任务 ({data.tasks.length})
+            Active tasks ({data.tasks.length})
           </div>
           {data.tasks.map((task) => {
             const isExpanded = expandedTask === task.name
@@ -156,7 +156,7 @@ export function WorkspaceTasksSidePanel({ panelId, adapterId }: SidePanelCompone
                         <span className="text-[9px] font-mono text-muted-foreground/50">{task.priority}</span>
                       )}
                       {task.subtasks && task.subtasks.length > 0 && (
-                        <span className="text-[9px] text-muted-foreground/50">{task.subtasks.length} 子任务</span>
+                        <span className="text-[9px] text-muted-foreground/50">{task.subtasks.length} subtasks</span>
                       )}
                     </div>
                   </div>
@@ -174,7 +174,7 @@ export function WorkspaceTasksSidePanel({ panelId, adapterId }: SidePanelCompone
                       <div>
                         <div className="flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/50 mb-1">
                           <ListTree className="h-3 w-3" />
-                          子任务
+                          Subtasks
                         </div>
                         {task.subtasks.map((st, i) => (
                           <div key={i} className="flex items-center gap-1.5 py-0.5 text-[11px] text-muted-foreground/70">
@@ -190,7 +190,7 @@ export function WorkspaceTasksSidePanel({ panelId, adapterId }: SidePanelCompone
                       <div>
                         <div className="flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/50 mb-1">
                           <CheckSquare className="h-3 w-3" />
-                          验收条件
+                          Acceptance criteria
                         </div>
                         {task.acceptanceCriteria.map((ac, i) => (
                           <div key={i} className="flex items-start gap-1.5 py-0.5 text-[11px] text-muted-foreground/80">
@@ -217,7 +217,7 @@ export function WorkspaceTasksSidePanel({ panelId, adapterId }: SidePanelCompone
       {/* Empty tasks */}
       {data.tasks.length === 0 && (
         <div className="flex flex-col items-center justify-center gap-2 p-4 text-center">
-          <span className="text-[12px] text-foreground-secondary/70">暂无活跃任务</span>
+          <span className="text-[12px] text-foreground-secondary/70">No active tasks</span>
         </div>
       )}
 
@@ -225,7 +225,7 @@ export function WorkspaceTasksSidePanel({ panelId, adapterId }: SidePanelCompone
       {data.recentJournals && data.recentJournals.length > 0 && (
         <div className="px-2 py-1.5 space-y-1 border-t border-border/40 mt-1">
           <div className="px-1 pb-1 text-[12px] text-foreground-secondary">
-            最近日志
+            Recent journals
           </div>
           {data.recentJournals.map((j, i) => (
             <div key={i} className="rounded-lg border border-border/30 bg-card/20 px-2.5 py-1.5">
@@ -235,7 +235,7 @@ export function WorkspaceTasksSidePanel({ panelId, adapterId }: SidePanelCompone
               </div>
               <div className="mt-0.5 flex items-center gap-2 text-[10px] text-muted-foreground/40">
                 <span className="font-mono">{j.date}</span>
-                <span>{j.lines} 行</span>
+                <span>{j.lines} lines</span>
               </div>
               {j.preview && (
                 <p className="mt-0.5 truncate text-[10px] text-muted-foreground/40">{j.preview}</p>

@@ -84,7 +84,7 @@ export function SessionForkOverlay({ open, onClose }: { open: boolean; onClose: 
       >
         <div className="flex items-center justify-between border-b border-border/50 px-3 py-2">
           <div>
-            <div className="text-[13px] font-medium">Fork 会话</div>
+            <div className="text-[13px] font-medium">Fork session</div>
             <div className="text-[10px] text-muted-foreground">
               Same as TUI <span className="font-mono">/fork</span> · pick a user message · Enter to confirm · Esc to close
             </div>
@@ -97,10 +97,10 @@ export function SessionForkOverlay({ open, onClose }: { open: boolean; onClose: 
           {loading ? (
             <div className="flex items-center gap-2 px-3 py-8 text-muted-foreground">
               <Loader2 className="h-4 w-4 animate-spin" />
-              加载…
+              Loading…
             </div>
           ) : messages.length === 0 ? (
-            <p className="px-3 py-8 text-[12px] text-muted-foreground">暂无用户消息可 Fork</p>
+            <p className="px-3 py-8 text-[12px] text-muted-foreground">No user messages to fork</p>
           ) : (
             <ul className="px-1">
               {messages.map((m, index) => {

@@ -31,8 +31,8 @@ export function LineGutterAddButton({
         'group-hover/line:opacity-100 focus-visible:opacity-100',
         className,
       )}
-      title={`引用 ${path}:${line} 到输入框`}
-      aria-label={`引用第 ${line} 行到输入框`}
+      title={`Quote ${path}:${line} into the input`}
+      aria-label={`Quote line ${line} into the input`}
       onClick={(event) => {
         event.preventDefault()
         event.stopPropagation()

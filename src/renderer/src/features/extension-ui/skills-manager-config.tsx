@@ -44,12 +44,12 @@ export function SkillsManagerConfig({
     persist(next)
   }
 
-  if (loading) return <div className="text-[12px] text-muted-foreground/50">加载技能列表…</div>
+  if (loading) return <div className="text-[12px] text-muted-foreground/50">Loading skill list…</div>
 
   if (skills.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-border/60 bg-muted/20 p-4 text-[12px] text-muted-foreground">
-        Worker 未返回技能（请先打开项目并等待会话初始化）。列表来自 pi <code className="font-mono">resourceLoader.getSkills()</code>，与 TUI 一致。
+        Worker returned no skills (open a project and wait for the session to initialize). The list comes from pi <code className="font-mono">resourceLoader.getSkills()</code>, same as the TUI.
       </div>
     )
   }
@@ -57,10 +57,10 @@ export function SkillsManagerConfig({
   return (
     <div className="space-y-2">
       <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground/60">
-        已发现技能（{skills.length}）
+        Skills found ({skills.length})
       </div>
       <p className="text-[11px] text-muted-foreground/70">
-        「桌面禁用」仅影响本 App 内展示与 Composer 联想标记，<strong>不修改</strong> pi 的 settings 或扩展包。
+        "Desktop disabled" only affects display and Composer suggestions in this app; it does <strong>not</strong> modify pi's settings or extension packages.
       </p>
       <div className="max-h-80 space-y-1 overflow-y-auto rounded-lg border border-border/50 p-2">
         {skills.map((sk) => {

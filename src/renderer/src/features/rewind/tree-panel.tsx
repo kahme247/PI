@@ -56,7 +56,7 @@ export function TreePanel() {
 
   if (!workspace) {
     return (
-      <div className="p-4 text-[12px] leading-relaxed text-muted-foreground">请先打开工作区</div>
+      <div className="p-4 text-[12px] leading-relaxed text-muted-foreground">Open a workspace first</div>
     )
   }
 

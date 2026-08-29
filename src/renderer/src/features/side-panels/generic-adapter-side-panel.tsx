@@ -33,21 +33,21 @@ export function GenericAdapterSidePanel({ panelId, adapterId }: SidePanelCompone
   }, [workspace, adapterId])
 
   if (!workspace) {
-    return <div className="p-4 text-[12px] text-muted-foreground">请先打开项目</div>
+    return <div className="p-4 text-[12px] text-muted-foreground">Open a project first</div>
   }
   if (!adapterId) {
-    return <div className="p-4 text-[12px] text-muted-foreground">未绑定 adapterId（panel: {panelId}）</div>
+    return <div className="p-4 text-[12px] text-muted-foreground">No adapter bound (panel: {panelId})</div>
   }
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
       <div className="flex items-center justify-end border-b border-border/40 px-2 py-1.5">
         <button type="button" onClick={() => void load()} className="text-[12px] text-foreground-secondary hover:text-foreground" disabled={loading}>
-          刷新
+          Refresh
         </button>
       </div>
       <div className="flex-1 overflow-auto p-3">
-        {loading && <div className="text-[12px] text-muted-foreground">加载中…</div>}
+        {loading && <div className="text-[12px] text-muted-foreground">Loading…</div>}
         {error && <div className="text-[12px] text-destructive">{error}</div>}
         {!loading && !error && (
           <pre className="whitespace-pre-wrap break-words rounded-md border border-border/40 bg-muted/30 p-2 font-mono text-[10px]">

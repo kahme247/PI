@@ -268,7 +268,7 @@ const TimelineItemBase = memo(function TimelineItem({
           : 'timeline-text-quiet'
     const Icon = status === 'error' ? XCircle : status === 'ok' ? CheckCircle2 : CornerDownLeft
     const label =
-      status === 'error' ? t('timeline:statusFailed') : status === 'ok' ? t('timeline:statusDone') : String(item.text ?? '').includes('失败') ? t('timeline:statusFailed') : t('timeline:statusExecuted')
+      status === 'error' ? t('timeline:statusFailed') : status === 'ok' ? t('timeline:statusDone') : /failed|失败/i.test(String(item.text ?? '')) ? t('timeline:statusFailed') : t('timeline:statusExecuted')
     return (
       <div className="py-1">
         <div className="timeline-status-line">

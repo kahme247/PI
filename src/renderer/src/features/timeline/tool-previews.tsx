@@ -100,7 +100,7 @@ function EditWritePreview({ item, flat }: { item: ToolTimelineItem; flat?: boole
       <NativePreviewPanel itemRunId={item.runId}
         icon={<FileText className="h-3.5 w-3.5 shrink-0 text-amber-500" />}
         title={name}
-        meta={<span className="text-[10px] text-green-600 dark:text-green-400">写入</span>}
+        meta={<span className="text-[10px] text-green-600 dark:text-green-400">Written</span>}
         defaultOpen={false}
         flat={flat}
       >
@@ -130,7 +130,7 @@ function EditWritePreview({ item, flat }: { item: ToolTimelineItem; flat?: boole
           {JSON.stringify(args, null, 2).slice(0, 2000)}
         </div>
       ) : (
-        <div className="p-2 text-[11px] text-foreground-secondary/60">无 diff 详情</div>
+        <div className="p-2 text-[11px] text-foreground-secondary/60">No diff details</div>
       )}
     </NativePreviewPanel>
   )
@@ -149,7 +149,7 @@ function ReadPreview({ item, flat }: { item: ToolTimelineItem; flat?: boolean })
     <NativePreviewPanel itemRunId={item.runId}
       icon={<FileText className="h-3.5 w-3.5 shrink-0 text-blue-500" />}
       title={name}
-      meta={<span className="text-[10px] tabular-nums text-foreground-secondary">{lineCount} 行</span>}
+      meta={<span className="text-[10px] tabular-nums text-foreground-secondary">{lineCount} lines</span>}
       defaultOpen={false}
       flat={flat}
     >
@@ -184,12 +184,12 @@ function GrepFindPreview({ item, isFind, flat }: { item: ToolTimelineItem; isFin
     <NativePreviewPanel itemRunId={item.runId}
       icon={isFind ? <FolderSearch className="h-3.5 w-3.5 shrink-0 text-violet-500" /> : <Search className="h-3.5 w-3.5 shrink-0 text-blue-500" />}
       title={isFind ? `find ${pattern}` : `grep "${pattern}"`}
-      meta={<span className="text-[10px] tabular-nums text-foreground-secondary">{lines.length} 条</span>}
+      meta={<span className="text-[10px] tabular-nums text-foreground-secondary">{lines.length} matches</span>}
       defaultOpen={false}
       flat={flat}
     >
       {show.length === 0 ? (
-        <div className="px-2.5 py-2 text-[11px] text-foreground-secondary">无结果</div>
+        <div className="px-2.5 py-2 text-[11px] text-foreground-secondary">No results</div>
       ) : (
         <div className="max-h-64 overflow-auto border-t border-border/30 font-mono text-[11px] leading-[17px]">
           {show.map((line, i) => {
@@ -260,7 +260,7 @@ function BashPreview({ item, flat }: { item: ToolTimelineItem; flat?: boolean })
           />
         </div>
       ) : (
-        <div className="px-2.5 py-2 text-[11px] text-foreground-secondary/70">（无输出）</div>
+        <div className="px-2.5 py-2 text-[11px] text-foreground-secondary/70">(no output)</div>
       )}
     </NativePreviewPanel>
   )

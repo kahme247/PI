@@ -636,6 +636,11 @@ export function Timeline() {
             scrollHeightBeforeLoadRef.current = null
             return
           }
+          // 抓取期间切走了会话：丢弃结果，不做任何状态变更。
+          if (useUIStore.getState().historySessionFile !== sessionFile) {
+            scrollHeightBeforeLoadRef.current = null
+            return
+          }
           if (!older.length) {
             // Empty page: unlock and stop pretending more disk history exists.
             scrollHeightBeforeLoadRef.current = null

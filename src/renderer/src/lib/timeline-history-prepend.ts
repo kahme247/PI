@@ -23,6 +23,14 @@ export async function prependOlderTimelinePage(
   }
 
   const store = useUIStore.getState()
+  // 用户可能在抓取期间切换会话：旧会话的整页数据不得污染当前时间线。
+  if (store.historySessionFile && store.historySessionFile !== sessionFile) {
+    return {
+      items: [],
+      sourceCount: 0,
+      totalCount: page.totalCount,
+    }
+  }
   if (page.items.length > 0) {
     const view = getSessionTimelineView(sessionFile)
     const previousHead = view?.head ?? []

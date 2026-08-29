@@ -42,24 +42,31 @@ function readPath(source: unknown, path: string | undefined): unknown {
 }
 
 function asStatus(raw: unknown): TodoStatus | null {
-  const value = String(raw || '').trim()
-  return (TODO_STATUSES as readonly string[]).includes(value) ? (value as TodoStatus) : null
+  const value = String(raw || '').trim().toLowerCase()
+  if ((TODO_STATUSES as readonly string[]).includes(value)) return value as TodoStatus
+  if (value === 'running') return 'in_progress'
+  if (value === 'done') return 'completed'
+  if (value === 'deleted' || value === 'canceled') return 'cancelled'
+  return null
 }
 
 function asPriority(raw: unknown): TodoPriority | undefined {
-  const value = String(raw || '').trim()
+  const value = String(raw || '').trim().toLowerCase()
   if (value === 'high' || value === 'medium' || value === 'low') return value
   return undefined
 }
 
 function itemFromUnknown(raw: unknown, fields: TodoFieldMap, index: number): TodoWidgetItem | null {
   if (!isRecord(raw)) return null
-  const text = String(raw[fields.text || 'text'] ?? raw.content ?? raw.title ?? '').trim()
+  const text = String(
+    raw[fields.text || 'text'] ?? raw.content ?? raw.subject ?? raw.title ?? raw.task ?? '',
+  ).trim()
   if (!text) return null
   const id = String(raw[fields.id || 'id'] ?? `todo-${index + 1}`)
   const doneRaw = raw[fields.done || 'done']
   let status = asStatus(raw[fields.status || 'status'])
   if (!status && typeof doneRaw === 'boolean') status = doneRaw ? 'completed' : 'pending'
+  if (!status && !raw[fields.status || 'status']) status = 'pending'
   if (!status) return null
   return {
     id,
@@ -71,15 +78,27 @@ function itemFromUnknown(raw: unknown, fields: TodoFieldMap, index: number): Tod
 
 export function extractTodoItems(payload: unknown, fields: TodoFieldMap = {}): TodoWidgetItem[] | null {
   if (payload == null) return null
+  let normalizedPayload = payload
+  if (typeof payload === 'string' && (payload.startsWith('{') || payload.startsWith('['))) {
+    try {
+      normalizedPayload = JSON.parse(payload)
+    } catch {
+      // ignore JSON parse error
+    }
+  }
   const itemsPath = fields.items || 'todos'
   const list =
-    Array.isArray(payload)
-      ? payload
-      : Array.isArray(readPath(payload, itemsPath))
-        ? (readPath(payload, itemsPath) as unknown[])
-        : Array.isArray((payload as { items?: unknown }).items)
-          ? ((payload as { items: unknown[] }).items)
-          : null
+    Array.isArray(normalizedPayload)
+      ? normalizedPayload
+      : Array.isArray(readPath(normalizedPayload, itemsPath))
+        ? (readPath(normalizedPayload, itemsPath) as unknown[])
+        : Array.isArray((normalizedPayload as { items?: unknown }).items)
+          ? ((normalizedPayload as { items: unknown[] }).items)
+          : Array.isArray((normalizedPayload as { tasks?: unknown }).tasks)
+            ? ((normalizedPayload as { tasks: unknown[] }).tasks)
+            : Array.isArray((normalizedPayload as { todos?: unknown }).todos)
+              ? ((normalizedPayload as { todos: unknown[] }).todos)
+              : null
   if (!list) return null
   const items = list
     .map((row, index) => itemFromUnknown(row, fields, index))

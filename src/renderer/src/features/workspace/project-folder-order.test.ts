@@ -8,6 +8,10 @@ describe('projectFolderOrder', () => {
     expect(projectFolderOrder(['a', 'c'], 'b', false)).toEqual(['a', 'c', 'b'])
     expect(projectFolderOrder(['a', 'c'], 'b', true)).toEqual(['a', 'c', 'b'])
     expect(projectFolderOrder([], 'b', false)).toEqual(['b'])
+    expect(projectFolderOrder(['D:\\proj\\a', 'D:\\proj\\b'], 'D:/proj/b', false)).toEqual([
+      'D:\\proj\\a',
+      'D:\\proj\\b',
+    ])
   })
 
   it('dedupes and ignores falsy entries', () => {

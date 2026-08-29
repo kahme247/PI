@@ -222,6 +222,34 @@ export const RichInput = forwardRef<HTMLDivElement, RichInputProps>(function Ric
     handleInput()
   }
 
+  const handleFocus = () => {
+    const el = innerRef.current
+    if (el && !disabled) {
+      const sel = window.getSelection()
+      if (!sel || sel.rangeCount === 0 || !el.contains(sel.anchorNode)) {
+        const range = document.createRange()
+        range.selectNodeContents(el)
+        range.collapse(false)
+        sel?.removeAllRanges()
+        sel?.addRange(range)
+      }
+    }
+    onFocus?.()
+  }
+
+  const handleClick = (e: React.MouseEvent) => {
+    const el = innerRef.current
+    if (!el || disabled) return
+    const sel = window.getSelection()
+    if (!sel || sel.rangeCount === 0 || !el.contains(sel.anchorNode)) {
+      const range = document.createRange()
+      range.selectNodeContents(el)
+      range.collapse(false)
+      sel?.removeAllRanges()
+      sel?.addRange(range)
+    }
+  }
+
   return (
     <div
       ref={innerRef}
@@ -233,8 +261,9 @@ export const RichInput = forwardRef<HTMLDivElement, RichInputProps>(function Ric
       data-placeholder={placeholder}
       onKeyDown={onKeyDown}
       onPaste={onPaste}
-      onFocus={onFocus}
+      onFocus={handleFocus}
       onBlur={onBlur}
+      onClick={handleClick}
       onInput={handleInput}
       onClickCapture={handleClickCapture}
       className={cn(

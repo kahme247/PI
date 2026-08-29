@@ -7,6 +7,7 @@ import { guardSessionSwitch } from '@renderer/lib/session-switch-guard'
 import { SidebarAnimatedCollapse } from '@renderer/components/ui/sidebar-animated-collapse'
 import { useUIStore } from '@renderer/stores/ui-store'
 import { sessionFilesEqual } from '@renderer/lib/session-file-key'
+import { workspacePathsEqual } from '@shared/workspace-path'
 import { openSubagentSessionPreview } from '@renderer/lib/subagent-session-navigation'
 import { collectActiveSubagentSessionChildren } from '@renderer/lib/subagent-session-activity'
 import { useToolCardCatalogReady } from '@renderer/features/timeline/tool-card-registry'
@@ -48,10 +49,11 @@ export function ProjectSessionTree({
     for (const session of projectSessions) {
       if (!session.sessionFile) continue
       const currentParent =
-        currentWorkspace === workspacePath
+        workspacePathsEqual(currentWorkspace, workspacePath)
         && sessionFilesEqual(session.sessionFile, historySessionFile)
       const retainedChildren =
-        subagentSessionGroup?.workspacePath === workspacePath
+        subagentSessionGroup
+        && workspacePathsEqual(subagentSessionGroup.workspacePath, workspacePath)
         && sessionFilesEqual(subagentSessionGroup.parentSessionFile, session.sessionFile)
           ? subagentSessionGroup.children
           : []
@@ -63,7 +65,7 @@ export function ProjectSessionTree({
 
   useEffect(() => {
     const group = subagentSessionGroup
-    if (!group || group.workspacePath !== workspacePath) return
+    if (!group || !workspacePathsEqual(group.workspacePath, workspacePath)) return
     const childSelected = group.children.some(
       (child) => child.sessionFile && sessionFilesEqual(child.sessionFile, historySessionFile),
     )
@@ -85,7 +87,7 @@ export function ProjectSessionTree({
 
   const openParentSession = (session: SessionItem) => {
     guardSessionSwitch(() => {
-      if (workspacePath === currentWorkspace) {
+      if (workspacePathsEqual(workspacePath, currentWorkspace)) {
         void switchSessionInPlace(session.sessionId, session.sessionFile)
       } else {
         void activateWorkspace(workspacePath, {
@@ -106,11 +108,12 @@ export function ProjectSessionTree({
         projectSessions.map((s) => {
           const sessionFile = s.sessionFile
           const currentParent = !!sessionFile
-            && currentWorkspace === workspacePath
+            && workspacePathsEqual(currentWorkspace, workspacePath)
             && sessionFilesEqual(sessionFile, historySessionFile)
           const retainedChildren =
             sessionFile
-            && subagentSessionGroup?.workspacePath === workspacePath
+            && subagentSessionGroup
+            && workspacePathsEqual(subagentSessionGroup.workspacePath, workspacePath)
             && sessionFilesEqual(subagentSessionGroup.parentSessionFile, sessionFile)
               ? subagentSessionGroup.children
               : []
@@ -124,7 +127,7 @@ export function ProjectSessionTree({
           )
           const parentActive =
             currentSessionId === s.sessionId
-            && workspacePath === currentWorkspace
+            && workspacePathsEqual(workspacePath, currentWorkspace)
             && sessionFilesEqual(historySessionFile, sessionFile)
           return (
             <div key={s.sessionId} className="mb-0.5">
@@ -198,7 +201,7 @@ export function ProjectSessionTree({
                   <div className="ml-5 border-l border-border/35 pb-0.5 pl-1.5 pt-0.5">
                     {children.map((child) => {
                       const childActive = !!child.sessionFile
-                        && workspacePath === currentWorkspace
+                        && workspacePathsEqual(workspacePath, currentWorkspace)
                         && sessionFilesEqual(child.sessionFile, historySessionFile)
                       const canOpen = !!child.sessionFile
                       return (

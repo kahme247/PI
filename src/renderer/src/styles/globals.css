@@ -761,13 +761,32 @@
     max-width: 14rem;
     min-width: 0;
     overflow: hidden;
+    background: var(--bg-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   }
   .adapter-widget-shell[data-open='true'] {
     flex: 1 1 auto;
-    max-width: calc(100% - 8.5rem);
+    max-width: 100%;
+    background: var(--bg-1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  .dark .adapter-widget-shell {
+    background: var(--bg-1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  }
+  .dark .adapter-widget-shell[data-open='true'] {
+    background: var(--bg-1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
   }
   .adapter-widget-trigger {
+    width: 100%;
+    padding: 0 0.5rem;
     color: var(--text-secondary);
+  }
+  .adapter-widget-shell[data-open='true'] .adapter-widget-trigger {
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
   }
   .adapter-widget-trigger:hover {
     color: var(--text-primary);

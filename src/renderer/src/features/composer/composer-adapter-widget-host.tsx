@@ -32,15 +32,15 @@ function widgetIcon(name?: string): AppIconComponent {
 function TodoListProjection({ items }: { items: TodoWidgetItem[] }) {
   const { t } = useTranslation()
   return (
-    <ul className="adapter-widget-list max-h-40 overflow-y-auto pb-0.5 pt-0.5" data-independent-scroll>
+    <ul className="adapter-widget-list max-h-48 overflow-y-auto px-2 py-1 space-y-0.5" data-independent-scroll>
       {items.map((item) => {
         const Icon = STATUS_ICONS[item.status]
         return (
           <li
             key={item.id}
             className={cn(
-              'adapter-widget-item flex items-start gap-1.5 py-1 text-[12px] leading-4',
-              item.status === 'in_progress' && 'adapter-widget-item-current text-foreground',
+              'adapter-widget-item flex items-start gap-2 rounded-md px-2 py-1 text-[12px] leading-4',
+              item.status === 'in_progress' && 'adapter-widget-item-current text-foreground font-medium',
               item.status === 'completed' && 'text-muted-foreground',
               item.status === 'cancelled' && 'text-muted-foreground/80',
             )}

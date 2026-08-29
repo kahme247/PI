@@ -5,6 +5,10 @@ describe('nextRecentProjects', () => {
   describe('MRU mode (fixedOrder=false)', () => {
     it('does not move an already-listed project', () => {
       expect(nextRecentProjects(['a', 'b', 'c'], 'b', false)).toEqual(['a', 'b', 'c'])
+      expect(nextRecentProjects(['D:\\proj\\a', 'D:\\proj\\b'], 'D:/proj/b', false)).toEqual([
+        'D:\\proj\\a',
+        'D:\\proj\\b',
+      ])
     })
 
     it('puts a new project at the front', () => {

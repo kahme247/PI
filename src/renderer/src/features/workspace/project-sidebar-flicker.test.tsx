@@ -204,4 +204,37 @@ describe('ProjectSidebar folder list stability', () => {
     const treeText = [...container.querySelectorAll('.sidebar-session-tree')].map((t) => t.textContent)
     expect(treeText.join('')).toContain('新会话')
   })
+
+  it('keeps the folder order stable when switching between projects with mixed slash separators', async () => {
+    useUIStore.setState({ currentWorkspace: 'D:\\projects\\alpha' })
+    deferNextRecentProjects = true
+    const { container } = render(
+      <ProjectSidebar onOpenProject={() => {}} openProjectLabel="打开" />,
+    )
+
+    await act(async () => {
+      resolveRecentProjects?.({
+        settings: { recentProjects: ['D:\\projects\\alpha', 'D:\\projects\\beta'] },
+      })
+      await new Promise((resolve) => setTimeout(resolve, 10))
+    })
+
+    const rows = () => [...container.querySelectorAll('.sidebar-project-row')]
+    expect(rows().map((r) => r.textContent)).toEqual([
+      expect.stringContaining('alpha'),
+      expect.stringContaining('beta'),
+    ])
+
+    // Switch to beta using forward slashes
+    await act(async () => {
+      useUIStore.getState().setWorkspace('D:/projects/beta')
+      await new Promise((resolve) => setTimeout(resolve, 10))
+    })
+
+    // Beta should NOT jump to the top or be duplicated
+    expect(rows().map((r) => r.textContent)).toEqual([
+      expect.stringContaining('alpha'),
+      expect.stringContaining('beta'),
+    ])
+  })
 })

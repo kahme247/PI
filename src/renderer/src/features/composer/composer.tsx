@@ -400,6 +400,26 @@ export function Composer() {
       </div>
       <div
         ref={slashPopoverAnchorRef}
+        onClick={(e) => {
+          const target = e.target as HTMLElement
+          if (
+            target.closest('button') ||
+            target.closest('a') ||
+            target.closest('input') ||
+            target.closest('.rich-attachment-chip') ||
+            target.closest('.rich-input')
+          ) {
+            return
+          }
+          const el = editorRef.current
+          if (el && !sessionPreview && voiceState !== 'recording' && voiceState !== 'transcribing') {
+            el.focus()
+            const sel = window.getSelection()
+            if (!sel || sel.rangeCount === 0 || !el.contains(sel.anchorNode)) {
+              placeCaretAtEnd(el)
+            }
+          }
+        }}
         className={cn(
           'composer-shell relative flex flex-col border',
           sessionPreview && 'opacity-90',

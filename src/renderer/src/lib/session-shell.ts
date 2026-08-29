@@ -316,6 +316,7 @@ export function bindViewToUiStore(view: SessionView): void {
       sessionFile: view.sessionKey,
       status: effectiveRunUI === 'running' ? 'running' : effectiveRunUI === 'failed' ? 'failed' : 'idle',
     },
+    composerWidget: getSessionComposerWidget(view.sessionKey, displayItems),
   })
 }
 
@@ -444,7 +445,7 @@ export function focusSessionSync(sessionId: string, sessionFile: string): {
   useUIStore.getState().setHistoryLoading(!instant)
   bindViewToUiStore(view)
   useUIStore.getState().clearFileChanges()
-  useUIStore.getState().setComposerWidget(getSessionComposerWidget(sessionFile))
+  useUIStore.getState().setComposerWidget(getSessionComposerWidget(sessionFile, view.items))
   evictSessionViewsIfNeeded()
   reportVisibleSession(sessionFile)
 

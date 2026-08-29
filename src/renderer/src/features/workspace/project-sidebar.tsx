@@ -20,6 +20,7 @@ import {
   type SandboxEntry,
   type SessionItem,
 } from './project-sidebar-types'
+import { dedupeWorkspacePaths, workspacePathsEqual } from '@shared/workspace-path'
 import { projectFolderOrder } from './project-folder-order'
 import { ProjectDiskRow, ProjectSessionTree, SandboxDialogRow } from './project-sidebar-rows'
 
@@ -42,7 +43,7 @@ export function ProjectSidebar({
   const [sandboxes, setSandboxes] = useState<SandboxEntry[]>([])
   const [expandedPaths, setExpandedPaths] = useState<Set<string>>(() => new Set())
   const [recentProjectsFixedOrder, setRecentProjectsFixedOrder] = useState(true)
-  const fixedOrderRef = useRef(false)
+  const fixedOrderRef = useRef(true)
   const [sectionOpen, setSectionOpen] = useState(true)
 
   const refreshSandboxes = useCallback(() => {
@@ -156,15 +157,24 @@ export function ProjectSidebar({
         if (list?.length) {
           const diskOnly = list.filter((p) => !isSandboxPath(p))
           const merged = [...diskOnly]
-          if (currentWorkspace && !isSandboxPath(currentWorkspace) && !merged.includes(currentWorkspace)) {
+          if (
+            currentWorkspace &&
+            !isSandboxPath(currentWorkspace) &&
+            !merged.some((p) => workspacePathsEqual(p, currentWorkspace))
+          ) {
             if (fixedOrderRef.current) merged.push(currentWorkspace)
             else merged.unshift(currentWorkspace)
           }
-          const next = [...new Set(merged)].slice(0, 16)
+          const next = dedupeWorkspacePaths(merged).slice(0, 16)
           useUIStore.setState((state) => {
             // 顺序/内容无变化时保持引用稳定，避免固定顺序下每次切换工作区都触发整个侧栏重渲染
             const prev = state.recentProjects
-            if (prev.length === next.length && prev.every((p, i) => p === next[i])) return {}
+            if (
+              prev.length === next.length &&
+              prev.every((p, i) => workspacePathsEqual(p, next[i]))
+            ) {
+              return {}
+            }
             return { recentProjects: next }
           })
         }
@@ -228,7 +238,7 @@ export function ProjectSidebar({
   }, [recentProjects, currentWorkspace, recentProjectsFixedOrder])
 
   const switchDiskProject = async (path: string) => {
-    if (path === currentWorkspace && !ephemeralSandboxDraft) return
+    if (workspacePathsEqual(path, currentWorkspace) && !ephemeralSandboxDraft) return
     try {
       await activateWorkspace(path)
     } catch (e) {
@@ -265,7 +275,7 @@ export function ProjectSidebar({
   const handleNewSessionInProject = async (workspacePath: string) => {
     if (!workspacePath || isSandboxPath(workspacePath)) return
     try {
-      if (workspacePath !== currentWorkspace) {
+      if (!workspacePathsEqual(workspacePath, currentWorkspace)) {
         await activateWorkspace(workspacePath, { preferHome: true })
       } else {
         enterBlankSession('pending-project')
@@ -280,14 +290,15 @@ export function ProjectSidebar({
   const mergedSessionsByWorkspace = useMemo(() => {
     const next = { ...sessionsByWorkspace }
     if (currentWorkspace && !isSandboxPath(currentWorkspace)) {
-      // store.sessions 是当前工作区的实时列表：新建 / fork / 删除都会更新它（不一定发布
-      // workspace-sessions 事件）。一旦实时列表非空就以它为准——否则新建/fork 的新会话会被
-      // 旧缓存遮蔽，侧栏一直显示旧列表直到手动刷新。
-      // 仅当切换工作区产生的瞬态空列表（setWorkspace 同步清空 sessions）且有缓存键时
-      // 才保留缓存，避免每次切换都闪“加载中”；空列表且无缓存则直接回填空列表。
+      const matchingKey = Object.keys(sessionsByWorkspace).find((k) =>
+        workspacePathsEqual(k, currentWorkspace),
+      )
       if (sessions.length > 0) {
         next[currentWorkspace] = sessions
-      } else if (!(currentWorkspace in next)) {
+        if (matchingKey && matchingKey !== currentWorkspace) {
+          next[matchingKey] = sessions
+        }
+      } else if (!(currentWorkspace in next) && (!matchingKey || !(matchingKey in next))) {
         next[currentWorkspace] = sessions
       }
     }
@@ -406,26 +417,35 @@ export function ProjectSidebar({
           <p className="px-3 py-2 text-[12px] text-foreground-secondary/80">{t('sidebar.openProject')}</p>
         ) : (
           diskPaths.map((path) => {
-            const open = expandedPaths.has(path)
-            const projectSessions = mergedSessionsByWorkspace[path] || []
-            const loading = loadingSessionPaths.has(path) && projectSessions.length === 0
+            const open = [...expandedPaths].some((p) => workspacePathsEqual(p, path))
+            const matchingKey = Object.keys(mergedSessionsByWorkspace).find((k) =>
+              workspacePathsEqual(k, path),
+            )
+            const projectSessions =
+              (matchingKey ? mergedSessionsByWorkspace[matchingKey] : mergedSessionsByWorkspace[path]) ||
+              []
+            const loading =
+              [...loadingSessionPaths].some((p) => workspacePathsEqual(p, path)) &&
+              projectSessions.length === 0
             return (
               <ProjectDiskRow
                 key={path}
                 path={path}
                 name={diskProjectName(path)}
-                active={path === currentWorkspace}
+                active={workspacePathsEqual(path, currentWorkspace)}
                 open={open}
                 onToggleOpen={() => {
-                  const willExpand = !expandedPaths.has(path)
+                  const isExpanded = [...expandedPaths].some((p) => workspacePathsEqual(p, path))
                   setExpandedPaths((previous) => {
-                    const next = new Set(previous)
-                    if (next.has(path)) next.delete(path)
-                    else next.add(path)
+                    const next = new Set<string>()
+                    for (const p of previous) {
+                      if (!workspacePathsEqual(p, path)) next.add(p)
+                    }
+                    if (!isExpanded) next.add(path)
                     return next
                   })
                   // Load sessions on expand (lazy); collapse is display-only.
-                  if (willExpand && !(path in mergedSessionsByWorkspace)) {
+                  if (!isExpanded && !projectSessions.length) {
                     void loadWorkspaceSessions(path)
                   }
                 }}

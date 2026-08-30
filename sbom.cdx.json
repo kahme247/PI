@@ -6,7 +6,7 @@
     "component": {
       "type": "application",
       "name": "pi-desktop",
-      "version": "0.4.10"
+      "version": "0.0.1"
     }
   },
   "components": [

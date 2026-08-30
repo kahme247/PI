@@ -94,7 +94,7 @@ export function registerSettingsHandlers(): void {
   })
 
   registerHandler('ipc:app.openRelease', async (req) => {
-    const slug = (process.env.PI_DESKTOP_GITHUB_REPO || 'justhil/pi-app').trim()
+    const slug = (process.env.PI_DESKTOP_GITHUB_REPO || 'kahme247/PI').trim()
     const url = (req.url && String(req.url).trim()) || `https://github.com/${slug}/releases`
     await shell.openExternal(url)
     return { ok: true }

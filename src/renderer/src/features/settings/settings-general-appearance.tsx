@@ -152,7 +152,7 @@ export function GeneralSettings() {
               <button
                 type="button"
                 onClick={() =>
-                  void ipcClient.invoke('app.openRelease', { url: 'https://github.com/justhil/pi-app' })
+                  void ipcClient.invoke('app.openRelease', { url: 'https://github.com/kahme247/PI' })
                 }
                 className={btnOutline}
                 title={t('settings:general.openGitHub')}

@@ -1,4 +1,5 @@
-# Build on tag v* or manual trigger: build Windows / macOS / Linux installers and publish GitHub Release
+# Release — build installers for Windows / macOS / Linux and publish GitHub Release
+# Trigger: push tag v* (e.g. v0.0.1) or manual dispatch on a tag ref
 name: Release
 
 on:
@@ -6,19 +7,61 @@ on:
     tags:
       - 'v*'
   workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Tag or branch to build (default: tag that triggered, or main)'
+        required: false
+        default: ''
+        type: string
 
 permissions:
   contents: write
   attestations: write
   id-token: write
 
+# Avoid overlapping releases on the same tag
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
+  # Quick validation before spending 90min on platform builds
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build (smoke)
+        run: npm run build
+
   build-win:
+    needs: validate
     runs-on: windows-latest
     timeout-minutes: 90
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -59,13 +102,17 @@ jobs:
             dist/*Portable*.exe
             dist/*.blockmap
           if-no-files-found: error
+          retention-days: 7
 
   build-mac:
+    needs: validate
     runs-on: macos-latest
     timeout-minutes: 90
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -162,13 +209,17 @@ jobs:
             dist/*.zip
             dist/*.blockmap
           if-no-files-found: error
+          retention-days: 7
 
   build-linux:
+    needs: validate
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -208,14 +259,19 @@ jobs:
             dist/*.deb
             dist/*.blockmap
           if-no-files-found: error
+          retention-days: 7
 
   release:
+    # Run on tags, or on manual dispatch when ref is a tag (e.g. workflow_dispatch --ref v0.0.1)
     if: startsWith(github.ref, 'refs/tags/')
     needs: [build-win, build-mac, build-linux]
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Download all platform artifacts
         uses: actions/download-artifact@v4
@@ -227,7 +283,9 @@ jobs:
       - name: Prepare release assets (no auto-update metadata)
         run: |
           find release-assets -type f \( -name 'latest.yml' -o -name 'latest-mac.yml' -o -name 'latest-linux.yml' \) -delete
+          echo "Assets:"
           find release-assets -type f | sort
+          echo "Total: $(find release-assets -type f | wc -l) files"
 
       - name: Generate SBOM
         run: node scripts/generate-release-sbom.mjs release-assets/sbom.cdx.json
@@ -246,6 +304,7 @@ jobs:
         run: |
           set -euo pipefail
           VER="${GITHUB_REF_NAME#v}"
+          echo "Generating notes for $VER (ref: $GITHUB_REF_NAME)"
           if ! node scripts/generate-release-notes.mjs "$VER" > release-body.md; then
             echo "::error::CHANGELOG.md missing section for ${VER}. Add user-facing notes before tagging."
             exit 1
@@ -255,7 +314,9 @@ jobs:
             exit 1
           fi
           echo "Release body preview:"
-          head -n 60 release-body.md
+          head -n 80 release-body.md
+          echo ""
+          echo "Body size: $(wc -c < release-body.md) bytes"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -263,5 +324,7 @@ jobs:
           name: ${{ github.ref_name }}
           body_path: release-body.md
           files: release-assets/**
+          fail_on_unmatched_files: false
+          generate_release_notes: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

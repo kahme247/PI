@@ -24,27 +24,26 @@ function ComposerModelStripImpl({
   const thinkLabel = formatThinkingChip(thinkingLevel)
 
   const btn = cn(
-    'max-w-[min(160px,38vw)] truncate rounded px-1 py-0.5 text-[10px] tabular-nums',
-    'text-foreground-secondary/45 hover:text-foreground-secondary/80 transition-colors duration-200',
-    'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand/25',
+    'max-w-[min(160px,38vw)] truncate rounded-md border border-border/40 bg-[var(--bg-1)]/60 px-1.5 py-0.5 text-[11px] font-medium tabular-nums shadow-xs',
+    'text-foreground-secondary hover:text-foreground hover:bg-[var(--bg-hover)] hover:border-border/70 transition-all duration-motion-fast ease-motion-ease',
+    'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand/35 active:scale-[0.96]',
   )
 
   return (
-    <div className="flex items-center justify-end gap-0.5">
+    <div className="flex items-center justify-end gap-1">
       <button
         type="button"
         onClick={onModelClick}
         title={modelLabel === t('composer:selectModel') ? t('composer:selectModelHint') : t('composer:modelLabel', { name: model ?? modelLabel })}
-        className={cn(btn, modelPickerOpen && 'text-foreground-secondary/75')}
+        className={cn(btn, modelPickerOpen && 'border-primary/50 text-foreground bg-primary/[0.08]')}
       >
         {modelLabel}
       </button>
-      <span className="text-foreground-secondary/20 text-[10px]">/</span>
       <button
         type="button"
         onClick={onThinkingClick}
         title={t('composer:thinkingLevel', { level: thinkLabel })}
-        className={cn(btn, 'max-w-[88px]', thinkingPickerOpen && 'text-foreground-secondary/75')}
+        className={cn(btn, 'max-w-[92px]', thinkingPickerOpen && 'border-primary/50 text-foreground bg-primary/[0.08]')}
       >
         {thinkLabel}
       </button>

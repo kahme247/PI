@@ -18,20 +18,28 @@ export function ComposerMetricsInline({ metrics, isRunning }: { metrics: Metrics
 
   if (!showCtx && !tpsLabel) return null
 
+  const ctxPct = metrics.ctxPct ?? 0
+  const ctxColorCls =
+    ctxPct > 80
+      ? 'text-red-500 font-semibold'
+      : ctxPct > 50
+        ? 'text-amber-500'
+        : 'text-foreground-secondary/70'
+
   return (
-    <div className="composer-metrics-inline flex min-w-0 shrink items-center gap-2 text-[10px] tabular-nums leading-none text-foreground-secondary/50">
+    <div className="composer-metrics-inline flex min-w-0 shrink items-center gap-2 text-[11px] tabular-nums leading-none text-foreground-secondary/60">
       {showCtx && (
         <span className="truncate" title={t('composer:contextHint')}>
-          {t('composer:contextLabel')}{' '}
-          <span className="text-foreground-secondary/62">
+          <span className="opacity-75">{t('composer:contextLabel')}</span>{' '}
+          <span className={ctxColorCls}>
             {formatTokens(metrics.estContextTokens ?? 0)}
-            {metrics.contextWindow != null && <> / {formatTokens(metrics.contextWindow)}</>}
-            {metrics.ctxPct != null && <> ({metrics.ctxPct.toFixed(1)}%)</>}
+            {metrics.contextWindow != null && <span className="text-foreground-secondary/40 font-normal"> / {formatTokens(metrics.contextWindow)}</span>}
+            {metrics.ctxPct != null && <span> ({metrics.ctxPct.toFixed(1)}%)</span>}
           </span>
         </span>
       )}
       {tpsLabel && (
-        <span className="shrink-0 text-foreground-secondary/55" title={t('composer:tpsHint')}>
+        <span className="shrink-0 rounded-sm bg-[var(--bg-2)]/60 px-1 py-0.5 text-[10px] font-medium text-foreground-secondary/75" title={t('composer:tpsHint')}>
           {tpsLabel}
         </span>
       )}

@@ -48,18 +48,18 @@ export function ThinkingPicker() {
   }
 
   return (
-    <div className="picker-backdrop backdrop-motion fixed inset-0 z-[110] flex items-end justify-center bg-black/40 p-4 pb-28 sm:items-start sm:pt-20" onClick={() => setOpen(false)}>
+    <div className="picker-backdrop backdrop-motion fixed inset-0 z-[110] flex items-end justify-center bg-black/40 backdrop-blur-sm p-4 pb-28 sm:items-start sm:pt-20" onClick={() => setOpen(false)}>
       <div
-        className="picker-panel w-full max-w-md overflow-hidden rounded-xl border border-border/80 bg-background shadow-2xl"
+        className="picker-panel w-full max-w-md overflow-hidden rounded-xl border border-border/80 bg-background/95 backdrop-blur-md shadow-2xl"
         style={{ boxShadow: '0 16px 48px color-mix(in srgb, var(--foreground) 12%, transparent)' }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between border-b px-4 py-3">
           <div className="flex items-center gap-2">
-            <Brain className="h-4 w-4 text-muted-foreground/70" />
-            <div className="text-[14px] font-medium">Thinking level</div>
+            <Brain className="h-4 w-4 text-primary/80" />
+            <div className="text-[13px] font-semibold text-foreground">Thinking level</div>
           </div>
-          <button type="button" onClick={() => setOpen(false)} className="row-hover rounded-lg p-1.5 text-foreground-secondary hover:text-foreground">
+          <button type="button" onClick={() => setOpen(false)} className="row-hover rounded-lg p-1.5 text-foreground-secondary hover:text-foreground transition-all duration-motion-fast">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -72,15 +72,15 @@ export function ThinkingPicker() {
                 key={lv.key}
                 onClick={() => pick(lv.key)}
                 className={cn(
-                  'picker-row flex w-full items-center gap-3 px-4 py-2.5 text-left',
-                  active && 'bg-[var(--bg-active)]',
+                  'picker-row flex w-full items-center gap-3 px-4 py-2.5 text-left transition-all duration-motion-fast ease-motion-ease',
+                  active ? 'bg-[var(--bg-active)] font-medium text-foreground' : 'text-foreground-secondary hover:text-foreground hover:bg-[var(--bg-hover)]',
                 )}
               >
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-[12px] uppercase">{lv.label}</span>
+                    <span className="font-mono text-[12px] uppercase font-semibold">{lv.label}</span>
                   </div>
-                  <div className="text-[11px] text-muted-foreground/60">{lv.desc}</div>
+                  <div className="text-[11px] text-foreground-secondary/75">{lv.desc}</div>
                 </div>
                 {active && <Check className="h-4 w-4 shrink-0 text-primary" />}
               </button>

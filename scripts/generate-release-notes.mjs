@@ -59,7 +59,7 @@ export function buildReleaseNotesFromChangelog(changelogMarkdown, version) {
     '',
     '---',
     '',
-    '安装包见本页 Assets。更新说明以本正文为准（应用内「发现新版本」弹窗会展示）。',
+    'Installers are in Assets below. These notes are shown in the in-app update dialog.',
     '',
   ].join('\n')
 }

@@ -1,9 +1,9 @@
 # Changelog
 
-面向仓库的完整版本记录。发版时由 `scripts/generate-release-notes.mjs` 从对应章节生成 **GitHub Release 正文**（用户可读更新说明，应用内「发现新版本」弹窗展示）。发布与应用内更新流程见 [doc/RELEASE.md](doc/RELEASE.md)。
+Complete version history for this repository. When cutting a release, `scripts/generate-release-notes.mjs` generates the **GitHub Release body** (user-facing release notes shown in the in-app update dialog) from the corresponding section. See [doc/RELEASE.md](doc/RELEASE.md) for the release and update workflow.
 
 ## [0.0.1] — 2026-08-30
 
-### 新增
+### Added
 
 - Initial release v0.0.1 — fresh start.

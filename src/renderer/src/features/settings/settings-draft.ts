@@ -149,7 +149,7 @@ export async function loadSettingsDraftFromDisk(i18nLanguage: string): Promise<S
     iconTheme: normalizeIconTheme(s.iconTheme),
     customTheme: normalizeCustomTheme(s.customTheme),
     customCssOverride: normalizeCustomCssOverride(s.customCssOverride),
-    language: normalizeLanguage(s.language, normalizeLanguage(i18nLanguage, 'zh')),
+    language: normalizeLanguage(s.language, normalizeLanguage(i18nLanguage, 'en')),
     autoOpenLastProject: s.autoOpenLastProject !== false,
     autoCheckRegistryUpdates: s.autoCheckRegistryUpdates !== false,
     alertSoundEnabled: s.alertSoundEnabled !== false,

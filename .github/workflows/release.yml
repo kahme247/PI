@@ -1,4 +1,4 @@
-# 打 tag v* 或手动触发：构建 Windows / macOS / Linux 安装包并发布 GitHub Release
+# Build on tag v* or manual trigger: build Windows / macOS / Linux installers and publish GitHub Release
 name: Release
 
 on:
@@ -240,7 +240,7 @@ jobs:
         with:
           subject-path: release-assets/**
 
-      # Release body = 用户可读更新说明（应用内弹窗展示）。禁止仅放 CHANGELOG 链接占位。
+      # Release body = user-readable release notes (shown in in-app update dialog). Do not leave placeholder CHANGELOG links only.
       - name: Draft release notes from CHANGELOG
         id: notes
         run: |

@@ -61,7 +61,7 @@ export function deliverDesktopAlert(win: BrowserWindow | null, payload: DesktopA
   if (!scenario || (!doNotify && !doSound)) return
 
   ensureNotificationIdentity()
-  const language = configStore.get('language') === 'en' ? 'en' : 'zh'
+  const language = configStore.get('language') === 'zh' ? 'zh' : 'en'
   const copy = buildCompletionNotificationCopy({
     language,
     outcome: 'success',

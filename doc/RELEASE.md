@@ -1,26 +1,25 @@
-# Release 说明
+# Release Guide
 
-## 发布流程（维护者）
+## Release process (maintainers)
 
-1. 在 `CHANGELOG.md` 顶部追加完整版本记录（用户可感知条目优先）。
-2. 在 `package.json` / `package-lock.json` 提升版本号。
-3. **GitHub Release 正文**（用户可见「更新说明」，应用内弹窗展示）：
-   - 草稿：`node scripts/generate-release-notes.mjs [version]`
-   - 用简短条目说明修复 / 新增 / 注意。
-   - **不要**只放 CHANGELOG / RELEASE 文档链接占位。
-4. 提交 `release: vX.Y.Z — …` 并打 tag `vX.Y.Z` 推送；CI 构建安装包，并用 `generate-release-notes.mjs` 写入 Release body。
-5. 若 CI body 不理想，在 GitHub Release 页手动改成正式说明。
+1. Add a complete version entry at the top of `CHANGELOG.md` (user-visible changes first).
+2. Bump the version in `package.json` / `package-lock.json`.
+3. **GitHub Release body** (user-facing "Release Notes" shown in the in-app update dialog):
+   - Draft: `node scripts/generate-release-notes.mjs [version]`
+   - Use short entries for fixes / new features / notes.
+   - **Do not** leave placeholder links to CHANGELOG / RELEASE docs only.
+4. Commit `release: vX.Y.Z — …` and push tag `vX.Y.Z`; CI builds installers and writes the Release body via `generate-release-notes.mjs`.
+5. If the CI body is not ideal, edit it manually on the GitHub Release page.
 
-## 应用内更新
+## In-app updates
 
-- 启动后后台检查 GitHub `releases/latest`（设置「自动检查更新」可关；失败静默，不弹窗）。
-- 有新版本且未「忽略本版本」时弹窗：更新说明（Release body）+ **本次忽略** / **忽略本版本** / **更新**。
-- **本次忽略**：仅本次关闭；**忽略本版本**：本机记住版本号，同版本不再自动弹。
-- **更新**：下载当前平台安装包并调用系统打开（Windows Setup / macOS dmg / Linux AppImage 等）。
-- 因此 **Release body 必须是用户可读说明**，禁止 CHANGELOG 链接占位（旧模板已废弃）。
+- On startup, check `releases/latest` in the background (can be disabled in Settings -> Auto-check for updates; failures are silent, no popup).
+- When a new version exists and is not "ignored", show a dialog: release notes (Release body) + **Dismiss** / **Ignore this version** / **Update**.
+- **Dismiss**: close once; **Ignore this version**: remember version locally, do not auto-show again for that version.
+- **Update**: download the current platform installer and open it (Windows Setup / macOS dmg / Linux AppImage, etc.).
+- Therefore **Release body must be user-readable**, placeholder CHANGELOG links are forbidden (old template deprecated).
 
-## 相关文档
+## Related docs
 
-- 本机协作备忘（可选，不进仓库）：根目录 `AGENTS.md`（已被 `.gitignore`）
-- 仓库变更记录：`CHANGELOG.md`
-
+- Local collaboration notes (optional, not in repo): root `AGENTS.md` (gitignored)
+- Repo changelog: `CHANGELOG.md`

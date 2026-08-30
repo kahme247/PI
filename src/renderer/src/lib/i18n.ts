@@ -27,8 +27,7 @@ import { ipcClient } from './ipc-client'
 type AppLanguage = 'zh' | 'en'
 
 function detectInitialLanguage(): AppLanguage {
-  const systemLanguage = (navigator.language || 'en').toLowerCase()
-  return systemLanguage.startsWith('zh') ? 'zh' : 'en'
+  return 'en'
 }
 
 function normalizeAppLanguage(language: unknown, fallbackLanguage: AppLanguage): AppLanguage {

@@ -6,12 +6,12 @@
 
 [pi](https://github.com/jvm/pi-mono) 编码助手的桌面应用 — 终端里跑的那个 Agent，现在有了时间线、侧栏和一个正经窗口。
 
-[![Version](https://img.shields.io/badge/version-0.0.1-blue?style=flat-square)](https://github.com/kahme247/PI/releases/tag/v0.0.1)
+[![Version](https://img.shields.io/badge/version-0.0.2-blue?style=flat-square)](https://github.com/kahme247/PI/releases/tag/v0.0.2)
 [![Release](https://img.shields.io/github/v/release/kahme247/PI?label=release&style=flat-square&logo=github)](https://github.com/kahme247/PI/releases/latest)
 [![CI](https://img.shields.io/github/actions/workflow/status/kahme247/PI/Release?label=release&logo=github&style=flat-square)](https://github.com/kahme247/PI/actions)
 [![Quality](https://img.shields.io/github/actions/workflow/status/kahme247/PI/Quality?label=quality&style=flat-square)](https://github.com/kahme247/PI/actions)
 [![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
-[![Changelog](https://img.shields.io/badge/changelog-0.0.1-informational?style=flat-square)](CHANGELOG.md)
+[![Changelog](https://img.shields.io/badge/changelog-0.0.2-informational?style=flat-square)](CHANGELOG.md)
 
 [English](./README.md) · [操作指南](./doc/guide/getting-started.zh-CN.md) · [适配器列表](./doc/guide/adapters.zh-CN.md) · [更新日志](./CHANGELOG.md) · [发版说明](./doc/RELEASE.md)
 

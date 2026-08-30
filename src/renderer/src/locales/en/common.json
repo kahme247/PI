@@ -92,6 +92,8 @@
     "copyPath": "Copy path"
   },
   "topbar": {
+    "open": "Open",
+    "revealInFolder": "Reveal in folder",
     "project": "Current project",
     "session": "Current session",
     "back": "Back",

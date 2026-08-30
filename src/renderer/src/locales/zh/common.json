@@ -92,6 +92,8 @@
     "copyPath": "复制路径"
   },
   "topbar": {
+    "open": "打开",
+    "revealInFolder": "文件夹",
     "project": "当前项目",
     "session": "当前会话",
     "back": "返回",

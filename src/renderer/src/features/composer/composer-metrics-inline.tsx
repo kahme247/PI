@@ -9,14 +9,14 @@ export function ComposerMetricsInline({ metrics, isRunning }: { metrics: Metrics
   const { t } = useTranslation()
   const showCtx = metrics.contextWindow != null || metrics.estContextTokens != null
 
-  const tpsLabel =
+  const tokPerSec =
     metrics.tps != null && metrics.tps > 0
-      ? `${Math.round(metrics.tps)} tps`
+      ? `${Math.round(metrics.tps / 4)} tok/s`
       : isRunning
         ? '…'
         : null
 
-  if (!showCtx && !tpsLabel) return null
+  if (!showCtx && !tokPerSec) return null
 
   const ctxPct = metrics.ctxPct ?? 0
   const ctxColorCls =
@@ -38,9 +38,9 @@ export function ComposerMetricsInline({ metrics, isRunning }: { metrics: Metrics
           </span>
         </span>
       )}
-      {tpsLabel && (
+      {tokPerSec && (
         <span className="shrink-0 rounded-sm bg-[var(--bg-2)]/60 px-1 py-0.5 text-[10px] font-medium text-foreground-secondary/75" title={t('composer:tpsHint')}>
-          {tpsLabel}
+          {tokPerSec}
         </span>
       )}
     </div>

@@ -79,6 +79,7 @@ function collectAssets(details: Record<string, unknown> | null | undefined, out:
 }
 
 function InlineImage({ path, workspaceRoot, enabled }: { path: string; workspaceRoot: string | null; enabled: boolean }) {
+  const { t } = useTranslation()
   const [src, setSrc] = useState<string | null>(null)
   const [err, setErr] = useState(false)
   useEffect(() => {
@@ -92,13 +93,14 @@ function InlineImage({ path, workspaceRoot, enabled }: { path: string; workspace
     return () => { cancelled = true }
   }, [path, workspaceRoot, enabled])
   if (!enabled) return null
-  if (err) return <div className="text-[10px] text-muted-foreground/50">无法内联预览（文件过大或格式不支持）</div>
+  if (err) return <div className="text-[10px] text-muted-foreground/50">{t('timeline:toolCard.unsupportedPreview', { defaultValue: 'Cannot preview inline (file too large or format unsupported)' })}</div>
   if (!src) return <div className="h-24 animate-pulse rounded-md bg-muted/40" />
   return <img src={src} alt="" className="max-h-48 max-w-full rounded-md border border-border/50 object-contain" />
 }
 
 // ── media template (image_gen / image_review / analyze_image / multimodal) ──
 const MediaTemplate: ToolCardComponent = ({ item }) => {
+  const { t } = useTranslation()
   const workspace = useUIStore((s) => s.currentWorkspace)
   const [showInline, setShowInline] = useState(true)
   const details = item.toolDetails as Record<string, unknown> | null | undefined
@@ -129,8 +131,8 @@ const MediaTemplate: ToolCardComponent = ({ item }) => {
           {a.path && (
             <>
               <span className="font-mono text-muted-foreground truncate max-w-[240px]" title={a.path}>{a.name || a.path}</span>
-              <button type="button" onClick={() => open(a.path!)} className="text-[10px] text-primary hover:underline">打开</button>
-              <button type="button" onClick={() => reveal(a.path!)} className="text-[10px] text-muted-foreground hover:text-foreground">文件夹</button>
+              <button type="button" onClick={() => open(a.path!)} className="text-[10px] text-primary hover:underline">{t('common:topbar.open', { defaultValue: 'Open' })}</button>
+              <button type="button" onClick={() => reveal(a.path!)} className="text-[10px] text-muted-foreground hover:text-foreground">{t('common:topbar.revealInFolder', { defaultValue: 'Folder' })}</button>
             </>
           )}
           {!a.path && !a.url && a.name && <span className="font-mono text-muted-foreground">{a.name}</span>}
@@ -220,6 +222,7 @@ const KvTemplate: ToolCardComponent = ({ item }) => {
 
 // ── default template (syntax-highlighted text + artifact paths) ──
 const DefaultTemplate: ToolCardComponent = ({ item }) => {
+  const { t } = useTranslation()
   const nativePreview = renderNativeToolPreview(item, { flat: true })
   const details = item.toolDetails as { paths?: string[]; format?: string } | null | undefined
   const detailPaths: string[] = Array.isArray(details?.paths) ? details.paths : []
@@ -241,8 +244,8 @@ const DefaultTemplate: ToolCardComponent = ({ item }) => {
               <div key={i} className="flex items-center gap-1 rounded-md border border-border/60 bg-background px-1.5 py-0.5">
                 <FileText className="h-3 w-3 text-blue-500" />
                 <span className="font-mono text-[10px]">{fmt && <span className="text-muted-foreground/50 mr-1">{fmt}</span>}{name}</span>
-                <button onClick={() => open(p)} className="rounded px-1 text-[10px] text-primary hover:underline">打开</button>
-                <button onClick={() => reveal(p)} className="rounded px-1 text-[10px] text-muted-foreground hover:text-foreground">文件夹</button>
+                <button onClick={() => open(p)} className="rounded px-1 text-[10px] text-primary hover:underline">{t('common:topbar.open', { defaultValue: 'Open' })}</button>
+                <button onClick={() => reveal(p)} className="rounded px-1 text-[10px] text-muted-foreground hover:text-foreground">{t('common:topbar.revealInFolder', { defaultValue: 'Folder' })}</button>
               </div>
             )
           })}

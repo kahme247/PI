@@ -1,11 +1,13 @@
 // Thinking level picker: shows all levels with descriptions, /thinking opens this.
 
+import { useEffect } from 'react'
 import { ipcClient } from '@renderer/lib/ipc-client'
 import { useUIStore } from '@renderer/stores/ui-store'
 import { cn } from '@renderer/lib/utils'
 import { X, Brain, Check } from '@renderer/components/icons'
 import { toast } from 'sonner'
 import { normalizeThinkingLevel } from '@renderer/lib/format-run-display'
+import { useTranslation } from 'react-i18next'
 
 const LEVELS: { key: string; label: string; desc: string }[] = [
   { key: 'off', label: 'Off', desc: 'No thinking, answer directly' },
@@ -17,10 +19,24 @@ const LEVELS: { key: string; label: string; desc: string }[] = [
 ]
 
 export function ThinkingPicker() {
+  const { t } = useTranslation()
   const open = useUIStore((s) => s.thinkingPickerOpen)
   const setOpen = useUIStore((s) => s.setThinkingPickerOpen)
   const current = normalizeThinkingLevel(useUIStore((s) => s.runState.thinkingLevel)) ?? 'medium'
   const sessionFile = useUIStore((s) => s.historySessionFile)
+
+  useEffect(() => {
+    if (!open) return
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        e.stopPropagation()
+        setOpen(false)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown, { capture: true })
+    return () => window.removeEventListener('keydown', handleKeyDown, { capture: true })
+  }, [open, setOpen])
 
   if (!open) return null
 
@@ -34,7 +50,7 @@ export function ThinkingPicker() {
         sessionFile: sessionFile ?? undefined,
         level,
       })
-      toast.success(`Thinking: ${level}`)
+      toast.success(t('composer:thinkingLevelSet', { defaultValue: `Thinking: ${level}` }))
     } catch (e) {
       const isWorkerNotStarted =
         e instanceof Error && e.message.toLowerCase().includes('worker not started')
@@ -43,12 +59,18 @@ export function ThinkingPicker() {
       }
       console.error('thinkingLevel.set failed:', e)
       useUIStore.getState().setRunState({ thinkingLevel: previous })
-      toast.error('Switch failed')
+      toast.error(t('composer:switchFailed', { defaultValue: 'Switch failed' }))
     }
   }
 
   return (
-    <div className="picker-backdrop backdrop-motion fixed inset-0 z-[110] flex items-end justify-center bg-black/40 backdrop-blur-sm p-4 pb-28 sm:items-start sm:pt-20" onClick={() => setOpen(false)}>
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="thinking-picker-title"
+      className="picker-backdrop backdrop-motion fixed inset-0 z-[110] flex items-end justify-center bg-black/40 backdrop-blur-sm p-4 pb-28 sm:items-start sm:pt-20"
+      onClick={() => setOpen(false)}
+    >
       <div
         className="picker-panel w-full max-w-md overflow-hidden rounded-xl border border-border/80 bg-background/95 backdrop-blur-md shadow-2xl"
         style={{ boxShadow: '0 16px 48px color-mix(in srgb, var(--foreground) 12%, transparent)' }}
@@ -57,7 +79,7 @@ export function ThinkingPicker() {
         <div className="flex items-center justify-between border-b px-4 py-3">
           <div className="flex items-center gap-2">
             <Brain className="h-4 w-4 text-primary/80" />
-            <div className="text-[13px] font-semibold text-foreground">Thinking level</div>
+            <div id="thinking-picker-title" className="text-[13px] font-semibold text-foreground">{t('composer:thinkingTitle', { defaultValue: 'Thinking level' })}</div>
           </div>
           <button type="button" onClick={() => setOpen(false)} className="row-hover rounded-lg p-1.5 text-foreground-secondary hover:text-foreground transition-all duration-motion-fast">
             <X className="h-4 w-4" />

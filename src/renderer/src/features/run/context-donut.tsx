@@ -8,13 +8,13 @@ export type ContextRoleSlice = {
   chars: number
 }
 
-/** Soft, tool-like palette — muted, not neon */
+/** Soft, tool-like palette — muted, dynamic CSS tokens */
 export const CONTEXT_ROLE_COLORS: Record<string, string> = {
   system: 'var(--aou-6)',
-  user: '#5b8def',
+  user: 'var(--primary-semantic)',
   assistant: 'var(--brand)',
-  tool: '#c4923a',
-  summary: '#8b7ec8',
+  tool: 'var(--tool-edit)',
+  summary: 'var(--aou-7)',
   other: 'var(--text-disabled)',
   free: 'var(--bg-3)',
 }

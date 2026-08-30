@@ -31,7 +31,7 @@ describe('checkGitHubReleaseUpdate network wiring', () => {
       new Response(
         JSON.stringify({
           tag_name: 'v0.4.21',
-          html_url: 'https://github.com/justhil/pi-app/releases/tag/v0.4.21',
+          html_url: 'https://github.com/kahme247/PI/releases/tag/v0.4.21',
           body: '## Fixes',
           assets: [
             {
@@ -56,7 +56,7 @@ describe('checkGitHubReleaseUpdate network wiring', () => {
 
     expect(electron.fetch).toHaveBeenCalledTimes(1)
     expect(electron.fetch.mock.calls[0][0]).toBe(
-      'https://api.github.com/repos/justhil/pi-app/releases/latest',
+      'https://api.github.com/repos/kahme247/PI/releases/latest',
     )
     expect(electron.fetch.mock.calls[0][1]).toMatchObject({
       headers: {

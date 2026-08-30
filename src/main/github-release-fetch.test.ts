@@ -18,7 +18,7 @@ describe('fetchLatestGitHubRelease', () => {
       .mockResolvedValueOnce(jsonResponse([{ tag_name: 'v0.4.20' }]))
 
     try {
-      await fetchLatestGitHubRelease('justhil/pi-app', fetch)
+      await fetchLatestGitHubRelease('kahme247/PI', fetch)
 
       expect(fetch.mock.calls[0][1]?.headers).toMatchObject({
         Authorization: 'Bearer test-token',
@@ -40,13 +40,13 @@ describe('fetchLatestGitHubRelease', () => {
     const fetch = vi.fn().mockResolvedValue(jsonResponse({ tag_name: 'v0.4.20' }))
 
     try {
-      await fetchLatestGitHubRelease('justhil/pi-app', fetch)
+      await fetchLatestGitHubRelease('kahme247/PI', fetch)
       expect(fetch.mock.calls[0][1]?.headers).toMatchObject({
         Authorization: 'Bearer gh-token',
       })
 
       process.env.GITHUB_TOKEN = 'github-token'
-      await fetchLatestGitHubRelease('justhil/pi-app', fetch)
+      await fetchLatestGitHubRelease('kahme247/PI', fetch)
       expect(fetch.mock.calls[1][1]?.headers).toMatchObject({
         Authorization: 'Bearer github-token',
       })
@@ -62,7 +62,7 @@ describe('fetchLatestGitHubRelease', () => {
     const fetch = vi.fn().mockResolvedValue(
       jsonResponse({
         tag_name: 'v0.4.21',
-        html_url: 'https://github.com/justhil/pi-app/releases/tag/v0.4.21',
+        html_url: 'https://github.com/kahme247/PI/releases/tag/v0.4.21',
         body: '## Fixes',
         assets: [
           {
@@ -74,13 +74,13 @@ describe('fetchLatestGitHubRelease', () => {
       }),
     )
 
-    const result = await fetchLatestGitHubRelease('justhil/pi-app', fetch)
+    const result = await fetchLatestGitHubRelease('kahme247/PI', fetch)
 
     expect(result).toEqual({
       ok: true,
       release: {
         tag_name: 'v0.4.21',
-        html_url: 'https://github.com/justhil/pi-app/releases/tag/v0.4.21',
+        html_url: 'https://github.com/kahme247/PI/releases/tag/v0.4.21',
         body: '## Fixes',
         assets: [
           {
@@ -111,7 +111,7 @@ describe('fetchLatestGitHubRelease', () => {
         ]),
       )
 
-    const result = await fetchLatestGitHubRelease('justhil/pi-app', fetch)
+    const result = await fetchLatestGitHubRelease('kahme247/PI', fetch)
 
     expect(result).toEqual({
       ok: true,
@@ -129,7 +129,7 @@ describe('fetchLatestGitHubRelease', () => {
   it('should_return_http_detail_when_github_returns_non_success', async () => {
     const fetch = vi.fn().mockResolvedValue(new Response(null, { status: 503 }))
 
-    const result = await fetchLatestGitHubRelease('justhil/pi-app', fetch)
+    const result = await fetchLatestGitHubRelease('kahme247/PI', fetch)
 
     expect(result).toEqual({
       ok: false,
@@ -144,7 +144,7 @@ describe('fetchLatestGitHubRelease', () => {
       .mockResolvedValueOnce(new Response(null, { status: 404 }))
       .mockResolvedValueOnce(new Response(null, { status: 502 }))
 
-    const result = await fetchLatestGitHubRelease('justhil/pi-app', fetch)
+    const result = await fetchLatestGitHubRelease('kahme247/PI', fetch)
 
     expect(result).toEqual({
       ok: false,
@@ -159,7 +159,7 @@ describe('fetchLatestGitHubRelease', () => {
       .mockResolvedValueOnce(new Response(null, { status: 404 }))
       .mockResolvedValueOnce(jsonResponse([]))
 
-    const result = await fetchLatestGitHubRelease('justhil/pi-app', fetch)
+    const result = await fetchLatestGitHubRelease('kahme247/PI', fetch)
 
     expect(result).toEqual({
       ok: false,
@@ -174,7 +174,7 @@ describe('fetchLatestGitHubRelease', () => {
   ])('should_return_stable_failure_when_%s_error_is_thrown', async (_kind, error, message) => {
     const fetch = vi.fn().mockRejectedValue(error)
 
-    const result = await fetchLatestGitHubRelease('justhil/pi-app', fetch)
+    const result = await fetchLatestGitHubRelease('kahme247/PI', fetch)
 
     expect(result).toEqual({
       ok: false,

@@ -46,6 +46,8 @@ export function buildReleaseNotesFromChangelog(changelogMarkdown, version) {
     .replace(/^完整更新日志[：:].*$/gim, '')
     .replace(/^Release 说明[：:].*$/gim, '')
     .replace(/^\s*完整变更记录见.*$/gim, '')
+    // Drop Keep-a-Changelog compare links at the bottom of sections
+    .replace(/^\[.*\]:\s*https?:\/\/.*$/gm, '')
     .trim()
 
   if (!body) {

@@ -6,19 +6,23 @@
 
 The desktop app for the [pi](https://github.com/jvm/pi-mono) coding agent — same agent you run in the terminal, now with a timeline, side panels, and a real window.
 
-[![Version](https://img.shields.io/badge/version-0.5.4-blue?style=flat-square)](https://github.com/justhil/pi-app/releases/latest)
-[![Download](https://img.shields.io/github/v/release/justhil/pi-app?label=download&style=flat-square&logo=github)](https://github.com/justhil/pi-app/releases/latest)
-[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](package.json)
-[![GitHub stars](https://img.shields.io/github/stars/justhil/pi-app?style=social)](https://github.com/justhil/pi-app/stargazers)
+[![Version](https://img.shields.io/badge/version-0.0.1-blue?style=flat-square)](https://github.com/kahme247/PI/releases/tag/v0.0.1)
+[![Release](https://img.shields.io/github/v/release/kahme247/PI?label=release&style=flat-square&logo=github)](https://github.com/kahme247/PI/releases/latest)
+[![CI](https://img.shields.io/github/actions/workflow/status/kahme247/PI/Release?label=release&logo=github&style=flat-square)](https://github.com/kahme247/PI/actions)
+[![Quality](https://img.shields.io/github/actions/workflow/status/kahme247/PI/Quality?label=quality&style=flat-square)](https://github.com/kahme247/PI/actions)
+[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
+[![Changelog](https://img.shields.io/badge/changelog-0.0.1-informational?style=flat-square)](CHANGELOG.md)
 
-[简体中文](./README.zh-CN.md) · [Getting started](./doc/guide/getting-started.md) · [Adapters](./doc/guide/adapters.en.md)
+[简体中文](./README.zh-CN.md) · [Getting started](./doc/guide/getting-started.md) · [Adapters](./doc/guide/adapters.en.md) · [Changelog](./CHANGELOG.md) · [Release guide](./doc/RELEASE.md)
 
 </div>
 
 > [!NOTE]
 > pi Desktop is **not** a separate AI — it's a desktop shell around the pi SDK you already use. Your conversations, model logins, and extension settings live in the same `~/.pi/agent` files. Open a project and keep chatting from where you left off in the terminal.
 
-![pi Desktop main window](https://img.justhil.uk/2026/06/25/image-20260625233744183)
+![pi Desktop v0.0.1 overview](doc/images/overview.png)
+
+*Main window — v0.0.1, English default, streaming timeline + session tree + file preview (1440×900, captured 2026-08-30)*
 
 ## Why
 
@@ -32,13 +36,14 @@ If you use pi in the terminal, you've probably wished for: a real diff view inst
 - **Workspace file preview** — multi-tab (`Ctrl`/`⌘`+click or right-click **Open in new tab**), line-gutter source view, **expand preview** into the chat column for wide reading
 - **Queue messages** — keep typing while the agent runs; messages execute when the current turn ends
 - **Full pi package ecosystem** — every extension you installed for terminal pi works here: dialogs, tool cards, side panels, and `/commands` are translated to native UI by per-extension **adapters**, with **no changes to the npm packages** (see [Extensions](#extensions))
-- **Bilingual UI** — 中文 / English toggle in Settings
+- **English by default, bilingual when you need it** — ships in English; switch to 中文 in **Settings → General** at any time
 - **Voice input** — optional mic → local transcription via [codex-asr](https://github.com/Wangnov/codex-asr) (bundled binary, ChatGPT/Codex token auth)
 - **Shared everything** — sessions, auth, `settings.json`, extensions: all in `~/.pi/agent`, shared with CLI pi
+- **Cross-platform installers** — Windows (NSIS Setup + Portable), macOS (dmg + zip, x64 & arm64), Linux (AppImage + deb) built by the [`Release` workflow](.github/workflows/release.yml) with SBOM, checksums, and provenance attestations
 
 ## Get the app
 
-**Windows** — download the installer or portable build from [Releases](https://github.com/justhil/pi-app/releases/latest).
+**Releases:** [kahme247/PI Releases](https://github.com/kahme247/PI/releases/latest) — download the installer for your platform (or grab `SHA256SUMS.txt` + `sbom.cdx.json` for verification).
 
 > [!TIP]
 > You need pi set up once on the machine (model login, the way you already use for terminal pi). After that, just open a project folder in pi Desktop and you're in.
@@ -46,11 +51,13 @@ If you use pi in the terminal, you've probably wished for: a real diff view inst
 **Build from source** (developers):
 
 ```bash
-git clone https://github.com/justhil/pi-app.git
-cd pi-app
+git clone https://github.com/kahme247/PI.git
+cd PI
 npm install
 npm run dev
 ```
+
+> Upstream is [justhil/pi-app](https://github.com/justhil/pi-app) — this fork is maintained at `kahme247/PI` with its own versioning starting at `v0.0.1`.
 
 ## First steps
 
@@ -59,8 +66,6 @@ npm run dev
 3. **Send a message** — `Enter` to send, `Shift+Enter` for a new line.
 4. **Check the right panel** — review, run, context, session tree, or **Files** (tabbed preview + explorer; expand preview across the chat column).
 5. **Jump back** — hover a message and undo, or double-tap `Esc` with an empty input to open the session tree.
-
-<img src="https://img.justhil.uk/2026/06/25/image-20260625234039591" alt="Conversation timeline" style="zoom:67%;" />
 
 ## Shortcuts
 
@@ -94,10 +99,7 @@ Each extension ships a terminal TUI (select, confirm, surveys, tool cards, `/com
 
 Extension pop-ups (questions, image approval, confirm dialogs) appear as native windows. Per-extension desktop options live under **Settings → Desktop adapters**. Advanced users can override builtin adapters with JSON in `~/.pi/desktop/adapters/`.
 
-
-![Composer with model pills](https://img.justhil.uk/2026/06/25/image-20260625233933437)
-
-Full list of 34 built-in desktop adapters: [doc/guide/adapters.en.md](./doc/guide/adapters.en.md) · Author your own: [adapter-authoring-guide.md](./doc/adapter-authoring-guide.md)
+Full list of 34 built-in desktop adapters: [doc/guide/adapters.en.md](./doc/guide/adapters.en.md) · Author your own: [doc/adapter-authoring-guide.md](./doc/adapter-authoring-guide.md)
 
 ## Voice input
 
@@ -116,6 +118,12 @@ Open **Settings → Voice**:
 
 Bundled binaries come from [codex-asr releases](https://github.com/Wangnov/codex-asr/releases). If absent, the app falls back to any `codex-asr` found on your system `PATH`.
 
+## Changelog & Releases
+
+- **Changelog:** [`CHANGELOG.md`](./CHANGELOG.md) — Keep a Changelog format, `v0.0.1` is the current baseline.
+- **Release guide:** [`doc/RELEASE.md`](./doc/RELEASE.md) — how to cut a release (bump `CHANGELOG.md` + `package.json`, push tag `v*`, CI builds installers and writes release notes from the changelog).
+- **CI:** [`Quality` workflow](.github/workflows/quality.yml) runs typecheck, lint, unit/E2E and build matrix on every push/PR. [`Release` workflow](.github/workflows/release.yml) builds Windows/macOS/Linux on tags and publishes the GitHub Release with SBOM + SHA256SUMS + provenance attestation.
+
 ## FAQ
 
 | Problem | Try this |
@@ -125,6 +133,7 @@ Bundled binaries come from [codex-asr releases](https://github.com/Wangnov/codex
 | Switching sessions feels slow at first | Only recent messages load immediately; the rest loads when you send or use the tree |
 | Voice doesn't work | Open Settings → Voice; check the token or run `codex login` to refresh — typing still works |
 | Closed an extension popup | Use **Continue** on the timeline |
+| Screenshot looks outdated | Regenerate `doc/images/overview.png` via `npm run build` + Playwright capture (see `doc/images/README.md`) |
 
 ## Sponsor
 
@@ -136,16 +145,17 @@ If pi Desktop has been useful to you, you can support its continued maintenance 
 
 Questions and feedback: **[LinuxDo](https://linux.do/)**
 
-If pi Desktop saves you from staring at a terminal all day, a **[star on GitHub](https://github.com/justhil/pi-app/stargazers)** helps others find it.
+If pi Desktop saves you from staring at a terminal all day, a **[star on GitHub](https://github.com/kahme247/PI/stargazers)** helps others find it.
 
 ---
 
 <details>
 <summary>For developers & extension authors</summary>
 
-- User docs: [`doc/`](./doc/README.md) — getting started, adapter list, screenshots
+- User docs: [`doc/`](./doc/README.md) — getting started, adapter list, screenshots (`doc/images/overview.png`)
 - Adapter authoring (for AI): [adapter-authoring-guide.md](./doc/adapter-authoring-guide.md)
-- Tech: Electron 35 · React 18 · TypeScript · Tailwind · shadcn · Zustand · i18next · `@earendil-works/pi-coding-agent`
-- Release: tag `v*` triggers `.github/workflows/release.yml` → Windows, macOS, Linux builds
+- Tech: Electron 43 · React 18 · TypeScript 5.7 · Vite 8 · Tailwind · shadcn · Zustand · i18next · `@earendil-works/pi-coding-agent` 0.83
+- Scripts: `npm run dev` (HMR), `npm run build` (production), `npm run typecheck`, `npm run lint`, `npm run test:unit`, `npm run test:e2e`
+- Release: tag `v*` triggers `.github/workflows/release.yml` → Windows, macOS, Linux builds + GitHub Release with assets from `dist/`
 
 </details>

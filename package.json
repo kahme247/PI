@@ -1,7 +1,7 @@
 {
   "name": "pi-desktop",
   "version": "0.0.1",
-  "description": "pi Desktop - 桌面端 AI Agent GUI",
+  "description": "pi Desktop - Electron shell for the pi coding agent",
   "main": "./out/main/index.js",
   "author": "pi-desktop",
   "license": "MIT",

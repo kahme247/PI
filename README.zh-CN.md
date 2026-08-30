@@ -1,23 +1,28 @@
 <div align="center">
+
 <img src="resources/icon.svg" alt="pi Desktop logo" width="80" height="80" />
 
 # pi Desktop
 
 [pi](https://github.com/jvm/pi-mono) 编码助手的桌面应用 — 终端里跑的那个 Agent，现在有了时间线、侧栏和一个正经窗口。
 
-[![Version](https://img.shields.io/badge/version-0.5.4-blue?style=flat-square)](https://github.com/justhil/pi-app/releases/latest)
-[![Download](https://img.shields.io/github/v/release/justhil/pi-app?label=download&style=flat-square&logo=github)](https://github.com/justhil/pi-app/releases/latest)
-[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](package.json)
-[![GitHub stars](https://img.shields.io/github/stars/justhil/pi-app?style=social)](https://github.com/justhil/pi-app/stargazers)
+[![Version](https://img.shields.io/badge/version-0.0.1-blue?style=flat-square)](https://github.com/kahme247/PI/releases/tag/v0.0.1)
+[![Release](https://img.shields.io/github/v/release/kahme247/PI?label=release&style=flat-square&logo=github)](https://github.com/kahme247/PI/releases/latest)
+[![CI](https://img.shields.io/github/actions/workflow/status/kahme247/PI/Release?label=release&logo=github&style=flat-square)](https://github.com/kahme247/PI/actions)
+[![Quality](https://img.shields.io/github/actions/workflow/status/kahme247/PI/Quality?label=quality&style=flat-square)](https://github.com/kahme247/PI/actions)
+[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
+[![Changelog](https://img.shields.io/badge/changelog-0.0.1-informational?style=flat-square)](CHANGELOG.md)
 
-[English](./README.md) · [操作指南](./doc/guide/getting-started.zh-CN.md) · [适配器列表](./doc/guide/adapters.zh-CN.md)
+[English](./README.md) · [操作指南](./doc/guide/getting-started.zh-CN.md) · [适配器列表](./doc/guide/adapters.zh-CN.md) · [更新日志](./CHANGELOG.md) · [发版说明](./doc/RELEASE.md)
 
 </div>
 
 > [!NOTE]
 > pi Desktop **不是**另一个 AI — 它是你已经在用的 pi SDK 的桌面外壳。对话、模型登录和扩展设置都在同一个 `~/.pi/agent` 目录里。打开项目，接着终端里的对话继续聊。
 
-![pi Desktop 主界面](https://img.justhil.uk/2026/06/25/image-20260625233744183)
+![pi Desktop v0.0.1 总览](doc/images/overview.png)
+
+*主界面 — v0.0.1，默认英文，流式时间线 + 会话树 + 文件预览（1440×900，2026-08-30 截取）*
 
 ## 为什么需要
 
@@ -31,13 +36,14 @@
 - **工作区文件预览** — 多标签（`Ctrl`/`⌘`+点击或右键新标签）、行号源码预览、一键 **展开到聊天区** 宽屏阅读
 - **排队消息** — Agent 运行时继续输入，当前轮次结束自动跟进
 - **完整 pi 包生态** — 你给终端 pi 装的每个扩展都能在桌面用：对话框、工具卡片、侧栏、`/命令` 由每个扩展的**适配器**翻译成原生 UI，**不改 npm 包**（见[扩展](#扩展)）
-- **中英双语界面** — 设置里一键切换
+- **默认英文，双语可用** — 默认 English，**设置 → 通用** 随时切回中文
 - **语音输入** — 可选，麦克风 → 本地转写，基于 [codex-asr](https://github.com/Wangnov/codex-asr)（内置二进制，ChatGPT/Codex token 认证）
 - **全部共享** — 会话、认证、`settings.json`、扩展：都在 `~/.pi/agent`，与终端 pi 共用
+- **跨平台安装包** — Windows（NSIS 安装包 + 便携版）、macOS（dmg + zip，x64 & arm64）、Linux（AppImage + deb），由 [`Release` 工作流](.github/workflows/release.yml) 自动构建，并附 SBOM、校验和与来源证明
 
 ## 下载
 
-**Windows** — 到 [Releases](https://github.com/justhil/pi-app/releases/latest) 下载安装包或便携版。
+**Releases：** 到 [kahme247/PI Releases](https://github.com/kahme247/PI/releases/latest) 下载对应平台安装包（可同时下载 `SHA256SUMS.txt` 与 `sbom.cdx.json` 校验）。
 
 > [!TIP]
 > 本机先按你平时的方式配好 pi（模型登录等）。之后在 pi Desktop 里打开项目文件夹就能用。
@@ -45,11 +51,13 @@
 **自己编译**（开发者）：
 
 ```bash
-git clone https://github.com/justhil/pi-app.git
-cd pi-app
+git clone https://github.com/kahme247/PI.git
+cd PI
 npm install
 npm run dev
 ```
+
+> 上游是 [justhil/pi-app](https://github.com/justhil/pi-app) — 本分支在 `kahme247/PI` 独立维护，版本号自 `v0.0.1` 起。
 
 ## 上手
 
@@ -58,8 +66,6 @@ npm run dev
 3. **发一条消息** — `Enter` 发送，`Shift+Enter` 换行。
 4. **看右栏** — 审查、运行、上下文、会话树，或 **文件**（标签预览 + 目录树；可展开预览占满聊天列）。
 5. **回跳** — 悬停消息点回退，或输入为空时连按两次 `Esc` 打开会话树。
-
-<img src="https://img.justhil.uk/2026/06/25/image-20260625234039591" alt="对话时间线" style="zoom:67%;" />
 
 ## 快捷键
 
@@ -93,11 +99,7 @@ pi 有不断壮大的 npm 包生态 — 子 Agent、生图、搜索、哈锡锚�
 
 扩展弹窗（问卷、审图、确认框）显示为原生窗口。每个扩展的桌面配置在 **设置 → 桌面适配器**。高级用户可用 `~/.pi/desktop/adapters/` 里的 JSON 覆盖内置适配器。
 
-
-
-![输入区与模型切换](https://img.justhil.uk/2026/06/25/image-20260625233933437)
-
-内置 34 个适配器完整列表：[doc/guide/adapters.zh-CN.md](./doc/guide/adapters.zh-CN.md) · 编写自己的适配器：[adapter-authoring-guide.md](./doc/adapter-authoring-guide.md)
+内置 34 个适配器完整列表：[doc/guide/adapters.zh-CN.md](./doc/guide/adapters.zh-CN.md) · 编写自己的适配器：[doc/adapter-authoring-guide.md](./doc/adapter-authoring-guide.md)
 
 ## 语音输入
 
@@ -116,6 +118,12 @@ pi 有不断壮大的 npm 包生态 — 子 Agent、生图、搜索、哈锡锚�
 
 内置二进制来自 [codex-asr releases](https://github.com/Wangnov/codex-asr/releases)。缺失时回退到系统 `PATH` 中的 `codex-asr`。
 
+## 更新日志与发版
+
+- **更新日志：** [`CHANGELOG.md`](./CHANGELOG.md) — Keep a Changelog 格式，当前基线 `v0.0.1`。
+- **发版指南：** [`doc/RELEASE.md`](./doc/RELEASE.md) — 如何发版（改 `CHANGELOG.md` + `package.json`，推标签 `v*`，CI 构建安装包并从 changelog 生成发布说明）。
+- **CI：** [`Quality` 工作流](.github/workflows/quality.yml)（类型检查、lint、单元/E2E、构建矩阵）每次 push/PR 运行；[`Release` 工作流](.github/workflows/release.yml) 在打标签时构建 Windows/macOS/Linux 并发布 GitHub Release（附 SBOM + SHA256SUMS + 来源证明）。
+
 ## 常见问题
 
 | 问题 | 试试 |
@@ -125,6 +133,7 @@ pi 有不断壮大的 npm 包生态 — 子 Agent、生图、搜索、哈锡锚�
 | 换会话一开始有点慢 | 先显示最近一段，发消息或用树跳转后会补全 |
 | 语音不可用 | 设置 → 语音输入；检查 token 或跑 `codex login` 刷新 — 不影响打字 |
 | 误关了扩展弹窗 | 时间线点 **继续作答** |
+| 截图过时 | 用 `npm run build` 后按 `doc/images/README.md` 重新截取 `doc/images/overview.png` |
 
 ## 赞助支持
 
@@ -136,16 +145,17 @@ pi 有不断壮大的 npm 包生态 — 子 Agent、生图、搜索、哈锡锚�
 
 讨论和反馈：**[LinuxDo](https://linux.do/)**
 
-若 pi Desktop 让你少盯一会儿终端，欢迎 **[GitHub 点个 Star](https://github.com/justhil/pi-app/stargazers)**，方便更多人看到。
+若 pi Desktop 让你少盯一会儿终端，欢迎 **[GitHub 点个 Star](https://github.com/kahme247/PI/stargazers)**，方便更多人看到。
 
 ---
 
 <details>
 <summary>开发者与扩展作者</summary>
 
-- 用户文档：[`doc/`](./doc/README.zh-CN.md) — 操作指南、适配器列表、截图
-- 给 AI 写适配器：[adapter-authoring-guide.md](./doc/adapter-authoring-guide.md)
-- 技术：Electron 35 · React 18 · TypeScript · Tailwind · shadcn · Zustand · i18next · `@earendil-works/pi-coding-agent`
-- 发布：打标签 `v*` 触发 `.github/workflows/release.yml` → Windows / macOS / Linux 构建
+- 用户文档：[`doc/`](./doc/README.zh-CN.md) — 操作指南、适配器列表、截图（`doc/images/overview.png`）
+- 给 AI 写适配器：[doc/adapter-authoring-guide.md](./doc/adapter-authoring-guide.md)
+- 技术：Electron 43 · React 18 · TypeScript 5.7 · Vite 8 · Tailwind · shadcn · Zustand · i18next · `@earendil-works/pi-coding-agent` 0.83
+- 脚本：`npm run dev`（热更新）、`npm run build`（生产构建）、`npm run typecheck`、`npm run lint`、`npm run test:unit`、`npm run test:e2e`
+- 发布：打标签 `v*` 触发 `.github/workflows/release.yml` → Windows、macOS、Linux 构建 + GitHub Release
 
 </details>

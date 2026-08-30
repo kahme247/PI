@@ -79,7 +79,7 @@ export function ComposerFilePopover({
   return createPortal(
     <div
       data-file-popover
-      className="popover-motion flex flex-col overflow-hidden rounded-xl border border-border/70 bg-popover shadow-lg"
+      className="popover-motion flex flex-col overflow-hidden rounded-xl border border-border/70 bg-popover/95 backdrop-blur-md shadow-xl"
       style={{
         position: 'fixed',
         left: layout.left,

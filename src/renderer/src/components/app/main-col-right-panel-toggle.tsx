@@ -30,34 +30,31 @@ export function MainColRightPanelToggle() {
   }
 
   const btnBase =
-    'electron-no-drag chrome-icon-btn flex h-7 w-7 items-center justify-center rounded-md border border-border/50 shadow-sm text-foreground-secondary disabled:opacity-50'
+    'electron-no-drag chrome-icon-btn flex h-7 w-7 items-center justify-center rounded-lg border border-border/50 shadow-xs text-foreground-secondary hover:text-foreground backdrop-blur-md transition-all duration-motion-fast ease-motion-ease active:scale-[0.93] disabled:opacity-50'
 
   return (
     <div
-      className="absolute right-3 top-2 z-20 flex flex-col gap-1"
-      style={{ background: 'transparent' }}
+      className="absolute right-3 top-2.5 z-20 flex items-center gap-1.5 p-0.5 rounded-lg border border-border/30 bg-background/80 backdrop-blur-md shadow-xs"
     >
-      {!collapsed && (
-        <button
-          type="button"
-          onClick={toggle}
-          title={t('common:topbar.collapseRightPanel')}
-          className={btnBase}
-          style={{ background: 'color-mix(in srgb, var(--surface-sidebar) 92%, transparent)' }}
-        >
-          <PanelRight className="h-3.5 w-3.5" />
-        </button>
-      )}
       <button
         type="button"
         onClick={() => void onReload()}
         disabled={reloading}
         title={t('common:sessionReload.title')}
-        className={cn(btnBase, 'transition-colors hover:bg-[var(--bg-hover)] hover:text-foreground')}
-        style={{ background: 'color-mix(in srgb, var(--surface-sidebar) 92%, transparent)' }}
+        className={cn(btnBase, 'hover:bg-[var(--bg-hover)] border-0 shadow-none')}
       >
         <RefreshCw className={cn('h-3.5 w-3.5', reloading && 'animate-spin')} />
       </button>
+      {!collapsed && (
+        <button
+          type="button"
+          onClick={toggle}
+          title={t('common:topbar.collapseRightPanel')}
+          className={cn(btnBase, 'hover:bg-[var(--bg-hover)] border-0 shadow-none')}
+        >
+          <PanelRight className="h-3.5 w-3.5" />
+        </button>
+      )}
     </div>
   )
 }

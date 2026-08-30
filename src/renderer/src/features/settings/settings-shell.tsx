@@ -91,13 +91,13 @@ export function SettingsNavItem({
       type="button"
       onClick={onClick}
       className={cn(
-        'flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-left text-base transition-colors duration-motion-fast ease-motion-ease',
+        'flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-base transition-all duration-motion-fast ease-motion-ease select-none',
         active
-          ? 'bg-[var(--bg-active)] font-medium text-foreground'
-          : 'text-muted-foreground hover:bg-[var(--bg-hover)] hover:text-foreground',
+          ? 'bg-background text-foreground font-semibold border border-border/50 shadow-xs'
+          : 'text-foreground-secondary hover:bg-[var(--bg-hover)] hover:text-foreground border border-transparent',
       )}
     >
-      <Icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
+      <Icon className={cn('h-4 w-4 shrink-0 transition-colors', active ? 'text-primary' : 'opacity-70')} strokeWidth={1.75} />
       <span className="truncate">{label}</span>
     </button>
   )

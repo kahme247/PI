@@ -273,14 +273,18 @@ export function ProjectDiskRow({
     <div key={path} className="sidebar-project-row mb-0.5" onContextMenu={onProjectContextMenu}>
       <div
         className={cn(
-          'nav-row flex min-h-[36px] items-center gap-0.5 rounded-lg px-0.5',
-          (active || open) && 'bg-[var(--bg-hover)]/80',
+          'nav-row flex min-h-[36px] items-center gap-0.5 rounded-lg px-1 transition-all duration-motion-fast ease-motion-ease',
+          active
+            ? 'bg-[var(--bg-hover)]/90 font-medium text-foreground border border-border/40 shadow-xs'
+            : open
+              ? 'bg-[var(--bg-hover)]/60 text-foreground'
+              : 'hover:bg-[var(--bg-hover)]/50',
         )}
       >
         <button
           type="button"
           onClick={onToggleOpen}
-          className="sidebar-project-hit flex min-w-0 flex-1 items-center gap-2 px-1.5 py-1.5 text-left"
+          className="sidebar-project-hit flex min-w-0 flex-1 items-center gap-2 px-1.5 py-1.5 text-left focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring/45 rounded-md"
           title={path}
           aria-expanded={open}
         >
@@ -291,12 +295,12 @@ export function ProjectDiskRow({
           <Folder
             className={cn(
               'folder-icon h-4 w-4 shrink-0 transition-colors duration-200',
-              active ? 'text-brand' : 'text-foreground-secondary/70',
+              active ? 'text-primary' : 'text-foreground-secondary/70',
             )}
           />
           <span
             className={cn(
-              'truncate text-[14px] leading-[20px]',
+              'truncate text-[13px] leading-[20px]',
               active ? 'font-medium text-foreground' : 'text-foreground-secondary',
             )}
           >
@@ -310,7 +314,7 @@ export function ProjectDiskRow({
             onNewSession()
           }}
           title={t('common:newSession')}
-          className="chrome-icon-btn ml-0.5 cursor-pointer rounded p-1"
+          className="chrome-icon-btn ml-0.5 cursor-pointer rounded-md p-1 hover:bg-[var(--bg-active)] active:scale-95 text-foreground-secondary hover:text-foreground transition-all duration-motion-fast ease-motion-ease"
         >
           <Plus className="h-3.5 w-3.5" />
         </button>
@@ -352,13 +356,13 @@ export function SandboxDialogRow({
       onKeyDown={(e) => e.key === 'Enter' && onOpen()}
       onContextMenu={onContextMenu}
       className={cn(
-        'nav-row sidebar-session-row mb-0.5 flex min-h-[40px] items-center gap-2.5 rounded-lg px-3 py-2',
-        active ? 'nav-row-active' : 'text-foreground-secondary hover:text-foreground',
+        'nav-row sidebar-session-row mb-0.5 flex min-h-[38px] items-center gap-2 rounded-lg px-2.5 py-1.5 transition-all duration-motion-fast ease-motion-ease cursor-pointer',
+        active ? 'bg-[var(--bg-hover)] font-medium text-foreground border border-border/40 shadow-xs' : 'text-foreground-secondary hover:text-foreground hover:bg-[var(--bg-hover)]/50',
       )}
     >
-      <Inbox className={cn('h-4 w-4 shrink-0', active ? 'text-brand' : 'opacity-70')} />
+      <Inbox className={cn('h-4 w-4 shrink-0 transition-colors duration-200', active ? 'text-primary' : 'opacity-70')} />
       <div className="min-w-0 flex-1">
-        <div className="truncate text-[14px] leading-[20px] text-foreground">{displayLabel}</div>
+        <div className="truncate text-[13px] leading-[18px] text-foreground">{displayLabel}</div>
         <div className="text-[11px] leading-[16px] tabular-nums text-foreground-secondary/85">
           {new Date(box.createdAt).toLocaleString(undefined, {
             month: 'short',

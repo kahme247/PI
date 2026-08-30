@@ -112,8 +112,10 @@ export function FilePreviewTabBar({
                   })
                 }}
                 className={cn(
-                  'files-preview-tab group flex h-8 w-[148px] max-w-[168px] shrink-0 cursor-pointer items-center gap-1.5 rounded-md px-2',
-                  active ? 'bg-[var(--bg-active)] text-foreground shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--brand)_22%,var(--border-base))]' : 'bg-[var(--bg-1)] text-foreground-secondary hover:bg-[var(--bg-hover)] hover:text-foreground',
+                  'files-preview-tab group flex h-8 w-[148px] max-w-[168px] shrink-0 cursor-pointer items-center gap-1.5 rounded-md px-2.5 transition-all duration-motion-fast ease-motion-ease select-none',
+                  active
+                    ? 'bg-background text-foreground font-semibold border border-border/60 shadow-xs'
+                    : 'bg-[var(--bg-1)]/80 text-foreground-secondary hover:bg-[var(--bg-hover)] hover:text-foreground border border-transparent',
                 )}
               >
                 <Icon className={cn('h-3.5 w-3.5 shrink-0 stroke-[1.75]', iconClass)} />
